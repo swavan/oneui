@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/swava">
+        <file>assets/images/logo/swavan_one_ui.png</file>
+        <file>assets/images/icons/add.ico</file>
+        <file>assets/images/icons/cancel.ico</file>
+        <file>assets/images/icons/left-arrow.ico</file>
+        <file>assets/images/icons/link.ico</file>
+        <file>assets/images/icons/right-arrow-.ico</file>
+        <file>assets/images/icons/save.ico</file>
+        <file>assets/images/icons/trash-can.ico</file>
+        <file>assets/images/icons/upload.ico</file>
+        <file>assets/images/walpaper/main.jpg</file>
+        <file>assets/images/walpaper/walpaper.jpeg</file>
+    </qresource>
+</RCC>
