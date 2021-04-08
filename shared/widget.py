@@ -5,6 +5,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMessageBox, QPushButton
 
 from shared.helper import do_nothing
+from shared.widgets.builder import full_path
 
 
 def delete_confirmation(parent, _id: str, action: Callable):
@@ -22,12 +23,12 @@ def delete_confirmation(parent, _id: str, action: Callable):
     border: none;
     '''
     yes_btn = QPushButton("  Yes")
-    yes_btn.setIcon(QIcon("assets/images/icons/trash-can.ico"))
+    yes_btn.setIcon(QIcon(full_path("assets/images/icons/trash-can.ico")))
     yes_btn.setStyleSheet(style)
 
     no_btn = QPushButton("  Cancel")
     no_btn.setStyleSheet(style)
-    no_btn.setIcon(QIcon("assets/images/icons/cancel.ico"))
+    no_btn.setIcon(QIcon(full_path("assets/images/icons/cancel.ico")))
 
     yes_btn.setDefault(True)
 

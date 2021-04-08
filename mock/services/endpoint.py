@@ -35,8 +35,10 @@ class EndpointService:
             return endpoints
 
     @classmethod
-    def is_endpoint_duplicate(cls, url: str, method: str) -> bool:
-        __endpoints = list(filter(lambda x: method.lower() == x.http_method.lower() and url.lower() == x.url.lower(), cls.load()))
+    def is_endpoint_duplicate(cls, url: str, method: str, id: str) -> bool:
+        __endpoints = list(filter(lambda x: method.lower() == x.http_method.lower()
+                                            and url.lower() == x.url.lower()
+                                            and id != x.id, cls.load()))
         return len(__endpoints) > 0
 
     @classmethod
@@ -90,7 +92,7 @@ class EndpointService:
     @classmethod
     def default_swavan_response(cls) -> str:
         return '''# Do not delete "swavan_response" method
-# You can access response/ headers, body and status using swavan
+# You can access response, headers, body and status using swavan
 # You can add additional header i.e. swavan.response.headers["app_name"] = "swavan"
 
 def swavan_response() -> None:

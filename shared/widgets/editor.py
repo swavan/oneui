@@ -1,10 +1,13 @@
 import json
+import os
 
 from PyQt6.Qsci import QsciScintilla, QsciLexerJSON, QsciLexerPython, QsciLexerHTML, QsciLexerYAML, QsciLexerXML, \
     QsciLexerJavaScript
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import QWidget
 from PyQt6.uic import loadUi
+
+from shared.widgets.builder import template_loader
 
 
 class SwaVanCodeEditor(QWidget):
@@ -13,7 +16,7 @@ class SwaVanCodeEditor(QWidget):
 
     def __init__(self):
         super().__init__()
-        loadUi("templates/code_board.ui", self)
+        template_loader("templates/code_board.ui", self)
         self.__editor = QsciScintilla(self)
         self.__editor.setUtf8(True)
         self.__editor.setCaretLineVisible(True)

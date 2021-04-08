@@ -13,6 +13,10 @@ uvicorn = "*"
 starlette = "*"
 python-multipart = "*"
 aiofiles = "*"
+py2app = "*"
+pyinstaller = "*"
+pyqt6-sip = "*"
+"pyqt6.sip" = "*"
 
 [requires]
 python_version = "3.9"

@@ -1,4 +1,5 @@
 import os
+import time
 from json.decoder import JSONDecodeError
 from typing import List, Dict
 
@@ -10,12 +11,14 @@ from mock.modals import Response as SwaVanResponse, Header
 from mock.servers.rest.helper import rule_matcher, proxy_request
 from mock.servers.rest.modal import SwaVanHttpResponse, RuleStatus
 from shared.helper import response_modifier, filter_by_code
+from shared.recorder import SwaVanLogRecorder
 
 
 class SwaVanRestEndpoint(HTTPEndpoint):
     __server = "swavan"
 
     async def get(self, request: Request):
+        SwaVanLogRecorder.send_log(f"Get request made")
         return await self.handler(request, "get")
 
     async def post(self, request):
@@ -58,16 +61,15 @@ class SwaVanRestEndpoint(HTTPEndpoint):
                 _matched_rules = rule_matcher(_response.rules, _header, _query, _body)
                 _and_rules = _response.connector.lower() == "and" and all(_matched_rules)
                 _or_rules = _response.connector.lower() == "or" and any(_matched_rules)
+                _have_rules = len(_response.rules) == 0
 
-                _and_or_rule_matched = RuleStatus.Matched if _and_rules or _or_rules else RuleStatus.Unmatched
-
+                _and_or_rule_matched = RuleStatus.Matched if _and_rules or _or_rules or not _have_rules else RuleStatus.Unmatched
                 _code_rule_matched = filter_by_code(
                     _response.filter_by,
                     query=_query,
                     headers=_header,
                     body=_body,
                     rule_status=_and_or_rule_matched) if _response.filter_by else _and_or_rule_matched
-
                 if _code_rule_matched == RuleStatus.Matched:
                     if _response.redirect and _response.modifier:
                         __response = await SwaVanRestEndpoint.proxy_request(
@@ -83,6 +85,9 @@ class SwaVanRestEndpoint(HTTPEndpoint):
                     else:
                         __response = await SwaVanRestEndpoint.make_response(_response)
                     break
+            sleeping_period = _endpoint.get('delay') or request.app.state.mock.get('delay') or 0
+            time.sleep(sleeping_period)
+
         return __response
 
     @classmethod
@@ -114,8 +119,7 @@ class SwaVanRestEndpoint(HTTPEndpoint):
                             ) -> Response:
         _mock_header = cls.header(_response.headers)
         _original_header = request_header
-        _headers = {**_mock_header, **_original_header}
-        proxy_response = proxy_request(_response.redirect, method_name, queries, body, _headers, cookies)
+        proxy_response = proxy_request(_response.redirect, method_name, queries, body, _mock_header, cookies)
         if proxy_response:
             altered: SwaVanHttpResponse = response_modifier(_response.modifier, proxy_response)
             if altered:

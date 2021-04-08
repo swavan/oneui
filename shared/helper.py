@@ -8,6 +8,7 @@ from requests import Response
 
 from mock.servers.rest.modal import SwaVanHttpResponse, SwaVanHttp, SwaVanHttpRequest, RuleStatus
 from mock.services.endpoint import EndpointService
+from shared.widgets.builder import full_path
 
 
 def string_func_wrapper(code: str, func_name):
@@ -79,10 +80,10 @@ def custom_callable(codes: List[int]):
 def add_or_button(button: QToolButton):
     if button.text().lower() == "and":
         button.setText("or")
-        button.setIcon(QIcon("assets/images/icons/or.ico"))
+        button.setIcon(QIcon(full_path("assets/images/icons/or.ico")))
     elif button.text().lower() == "or":
         button.setText("and")
-        button.setIcon(QIcon("assets/images/icons/and.ico"))
+        button.setIcon(QIcon(full_path("assets/images/icons/and.ico")))
 
 
 def copy_endpoint(endpoint_ids: List[str]):

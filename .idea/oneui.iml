@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/pyapp/build/python_distributions/python.bba27f89e6ec/python/build/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/pyapp/build/python_distributions/python.bba27f89e6ec/python/build/Objects" />
+      <excludeFolder url="file://$MODULE_DIR$/pyapp/build/python_distributions/python.bba27f89e6ec/python/build/Parser" />
+      <excludeFolder url="file://$MODULE_DIR$/pyapp/build/python_distributions/python.bba27f89e6ec/python/build/Programs" />
+      <excludeFolder url="file://$MODULE_DIR$/pyapp/build/python_distributions/python.bba27f89e6ec/python/install/lib/python3.9/lib-dynload" />
+    </content>
     <orderEntry type="jdk" jdkName="Pipenv (oneui)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

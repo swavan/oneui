@@ -18,7 +18,7 @@ class SwaVanRestMockServer(SwaVanMockTask):
                          headers=_headers,
                          port=int(_mock.port))
         if _mock.enable_https:
-            cwd =  os.path.dirname(os.path.realpath(__file__))
+            cwd = os.path.dirname(os.path.realpath(__file__))
             _key_file = os.path.join(cwd, "certs/swavan.key")
             _cert_file = os.path.join(cwd, "certs/swavan.crt")
             _config.ssl_keyfile = _key_file

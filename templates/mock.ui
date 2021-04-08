@@ -16,7 +16,7 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,1">
+  <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,1,0">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -40,9 +40,7 @@
      <item>
       <widget class="QFrame" name="mockActions">
        <property name="styleSheet">
-        <string notr="true">#mockActions {
-   padding: 0px;
-}</string>
+        <string notr="true">#mockActions {padding: 0px;}</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::Panel</enum>
@@ -271,7 +269,7 @@
          <number>0</number>
         </property>
         <item>
-         <layout class="QVBoxLayout" name="endpoint_container" stretch="1,0">
+         <layout class="QVBoxLayout" name="endpoint_container" stretch="0,0">
           <property name="spacing">
            <number>0</number>
           </property>
@@ -343,13 +341,19 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="setting_mock_btn">
+              <widget class="QPushButton" name="log_view_btn">
+               <property name="toolTip">
+                <string>View Log</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>0</number>
+               </property>
                <property name="text">
-                <string> Setting</string>
+                <string>Log</string>
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../assets/images/icons/setting.ico</normaloff>../assets/images/icons/setting.ico</iconset>
+                 <normaloff>../assets/images/icons/log.ico</normaloff>../assets/images/icons/log.ico</iconset>
                </property>
               </widget>
              </item>
@@ -386,11 +390,25 @@
          <number>10</number>
         </property>
         <item>
-         <layout class="QVBoxLayout" name="mock_content_view"/>
+         <layout class="QVBoxLayout" name="mock_content_view">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+         </layout>
         </item>
        </layout>
       </widget>
      </item>
+     <item>
+      <layout class="QVBoxLayout" name="mock_right_size"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="mock_content_log">
+     <property name="spacing">
+      <number>0</number>
+     </property>
     </layout>
    </item>
   </layout>

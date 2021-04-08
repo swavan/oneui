@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "29868ecc4c18f31581437294bdb73c46675de1228775ed1a2cfa679ab09a7113"
+            "sha256": "4f3fc3813f26cd007298e2656ea92eb66d4e495a0258550cd8eea193afd211fa"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -23,6 +23,13 @@
             ],
             "index": "pypi",
             "version": "==0.6.0"
+        },
+        "altgraph": {
+            "hashes": [
+                "sha256:1f05a47122542f97028caf78775a095fbe6a2699b5089de8477eb583167d69aa",
+                "sha256:c623e5f3408ca61d4016f23a681b9adb100802ca3e3da5e718915a9e4052cebe"
+            ],
+            "version": "==0.17"
         },
         "certifi": {
             "hashes": [
@@ -62,6 +69,43 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==2.10"
+        },
+        "macholib": {
+            "hashes": [
+                "sha256:0c436bc847e7b1d9bda0560351bf76d7caf930fb585a828d13608839ef42c432",
+                "sha256:c500f02867515e6c60a27875b408920d18332ddf96b4035ef03beddd782d4281"
+            ],
+            "markers": "sys_platform == 'darwin'",
+            "version": "==1.14"
+        },
+        "modulegraph": {
+            "hashes": [
+                "sha256:11c03dac1368bb9e7f780b58d251a0880c30b5a14816b6f88ec5a6fe1e3e5611",
+                "sha256:60e58a96728fa741aac2800bf89cf89a59311c5bec336bd7a146a476446eb740"
+            ],
+            "version": "==0.18"
+        },
+        "py2app": {
+            "hashes": [
+                "sha256:73955cbf0ea69b419f5e51c2300cd97b405b7586c3859639efe30f2fb9d54aa8",
+                "sha256:753915b2efaa72b23de1553e00f2cd9d3b4fdc05269ccae4b65c710e38121d67"
+            ],
+            "index": "pypi",
+            "version": "==0.24"
+        },
+        "pyinstaller": {
+            "hashes": [
+                "sha256:f5c0eeb2aa663cce9a5404292c0195011fa500a6501c873a466b2e8cad3c950c"
+            ],
+            "index": "pypi",
+            "version": "==4.2"
+        },
+        "pyinstaller-hooks-contrib": {
+            "hashes": [
+                "sha256:27558072021857d89524c42136feaa2ffe4f003f1bdf0278f9b24f6902c1759c",
+                "sha256:892310e6363655838485ee748bf1c5e5cade7963686d9af8650ee218a3e0b031"
+            ],
+            "version": "==2021.1"
         },
         "pyqt6": {
             "hashes": [
@@ -107,7 +151,26 @@
                 "sha256:ec65dea1c3b7ddbeea4cac565490e9a39d37cf61468f29715f0b164454a05a0f",
                 "sha256:fe8d34a1691a39890aa7829897d9e02aadb2a5ac3ff91c57f22105b689c448da"
             ],
-            "markers": "python_version >= '3.6'",
+            "index": "pypi",
+            "version": "==13.0.1"
+        },
+        "pyqt6.sip": {
+            "hashes": [
+                "sha256:1c08645e27543aed7f38f74454a3083866afa1cadde6858a07f77c3f71ae2af6",
+                "sha256:310d0c0efdbc086ef913f4ecdfaf8e62f2b70cadeacb42536bfe943c19709987",
+                "sha256:412ff1616027f9c4e7f41eebc6f43074a6e80a0b84e11213957382531d27d3bd",
+                "sha256:41fd704ffb262f49c60081ae76cde816a812bf54f4da6f7a2deaddeaa1668f45",
+                "sha256:63b4a8ff444199f3d8fb3b98bcc5678ef1d548fa000b2f74fa38460c2c72f5da",
+                "sha256:75ad1923c30d09115d96968b8a26578e51a8938ead849b50fb41395f9a3c8561",
+                "sha256:908809765d6f6beaf423fd02bf7f7f8160a871d4039bbde1043e5a9cb20de862",
+                "sha256:95c29cd7b3e600aa5f4c15e07f7bedd7b3ab94eca38a426dc607de8c1928429e",
+                "sha256:98d54fac379581049e4cf9dcd24c139293530038e09b006e83decbff7543c888",
+                "sha256:9d7143ac735949a40b1548e3d5f0bb79d7278eb101379a4fdeb145a3a7ef837e",
+                "sha256:c28fc1569649386a99ca3fb9fad22a7066341e23686079e3589c46f3b4d11787",
+                "sha256:ec65dea1c3b7ddbeea4cac565490e9a39d37cf61468f29715f0b164454a05a0f",
+                "sha256:fe8d34a1691a39890aa7829897d9e02aadb2a5ac3ff91c57f22105b689c448da"
+            ],
+            "index": "pypi",
             "version": "==13.0.1"
         },
         "python-multipart": {

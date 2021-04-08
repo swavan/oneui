@@ -3,11 +3,11 @@ from json.decoder import JSONDecodeError
 
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtWidgets import QWidget
-from PyQt6.uic import loadUi
 
 from mock.add.endpoint import SwaVanEndpoint
 from mock.modals import Endpoint
 from mock.services.endpoint import EndpointService
+from shared.widgets.builder import template_loader
 
 
 class SwaVanMockImport(QWidget):
@@ -16,7 +16,7 @@ class SwaVanMockImport(QWidget):
 
     def __init__(self, ):
         super(SwaVanMockImport, self).__init__()
-        loadUi("templates/mock_import.ui", self)
+        template_loader("templates/mock_import.ui", self)
         self.mock_load_json_btn.clicked.connect(self.save)
         self.mock_json_pretty_btn.clicked.connect(self.format_json)
         self.mock_load_json_cancel_btn.clicked.connect(self.canceled)

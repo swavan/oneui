@@ -1,7 +1,6 @@
 from PyQt6.QtCore import Qt, QSize, QPropertyAnimation, pyqtSignal
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget, QDialog, QVBoxLayout
-from PyQt6.uic import loadUi
+from PyQt6.QtWidgets import QWidget, QDialog, QVBoxLayout, QDockWidget, QTextEdit
 
 from mock.add import SwaVanMockImport
 from mock.add.endpoint import SwaVanEndpoint
@@ -12,6 +11,8 @@ from mock.servers.server import SwaVanMockServerService
 from mock.services.endpoint import EndpointService
 from mock.services.mock import MockEnvironmentService
 from mock.view import SwaVanMockEndpoints
+from shared.recorder import SwaVanLogRecorder
+from shared.widgets.builder import template_loader, full_path
 from stores.cache import SwaVanCache
 
 
@@ -21,8 +22,7 @@ class SwaVanMockPage(QWidget):
 
     def __init__(self):
         super(SwaVanMockPage, self).__init__()
-        loadUi("templates/mock.ui", self)
-
+        template_loader("templates/mock.ui", self)
         _last = MockEnvironmentService.last_seen()
         self.mock_server_selected_btn.setText(f" {_last.name} : {_last.port} ")
         SwaVanCache.set_selected_env(_last.id)
@@ -34,6 +34,7 @@ class SwaVanMockPage(QWidget):
 
         _endpoint = SwaVanEndpoint()
         _endpoint.setObjectName("SwaVanEndpoint")
+
         _endpoint.saved.connect(_endpoints.update_view)
         self.mock_content_view.addWidget(_endpoint)
 
@@ -43,7 +44,7 @@ class SwaVanMockPage(QWidget):
         self.import_mock_btn.clicked.connect(self.import_mocks)
         self.mock_toggle_endpoints_btn.clicked.connect(self.toggle_view)
 
-        self.setting_mock_btn.clicked.connect(self.environment_settings)
+        self.log_view_btn.clicked.connect(self.create_log_view)
         self.mock_server_selected_btn.clicked.connect(self.environment_settings)
 
         self.server_status_btn.clicked.connect(self.toggle_endpoint)
@@ -62,7 +63,7 @@ class SwaVanMockPage(QWidget):
         self.play_icon_update(not is_running)
     
     def play_icon_update(self, is_running: bool):
-        _icon = QIcon(f"assets/images/icons/{'play' if not is_running else 'stop'}.ico")
+        _icon = QIcon(full_path(f"assets/images/icons/{'play' if not is_running else 'stop'}.ico"))
         self.server_status_btn.setIcon(_icon)
 
     def toggle_view(self):
@@ -94,6 +95,20 @@ class SwaVanMockPage(QWidget):
         self.environment_changed.emit()
         is_running = SwaVanMockServerService.is_running(SwaVanCache.get_selected_env())
         self.play_icon_update(is_running)
+
+    def create_log_view(self):
+        _dock = QDockWidget("Log", self)
+        _dock.setFloating(True)
+        _view = QTextEdit()
+        _dock.setWindowModality(Qt.WindowModality.NonModal)
+        for row in SwaVanLogRecorder.reading_log():
+            _pre = _view.toPlainText()
+            _view.setPlainText(f"{_pre}\n{row}")
+
+        _view.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        _view.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        _dock.setWidget(_view)
+        self.mock_right_size.addWidget(_dock)
 
     def _dialog_handler(self, _widget: QWidget):
         _dialog = QDialog(self)

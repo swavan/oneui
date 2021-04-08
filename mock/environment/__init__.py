@@ -1,11 +1,11 @@
 from PyQt6.QtCore import pyqtSignal, QSize, QEvent
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QTableWidgetItem, QHeaderView, QMenu
-from PyQt6.uic import loadUi
 
 from mock.modals import Mock, Header
 from mock.services.mock import MockEnvironmentService
 from shared.widget import delete_confirmation
+from shared.widgets.builder import template_loader, full_path
 
 
 class SwaVanEnvironment(QWidget):
@@ -16,7 +16,7 @@ class SwaVanEnvironment(QWidget):
 
     def __init__(self):
         super(SwaVanEnvironment, self).__init__()
-        loadUi("templates/environment.ui", self)
+        template_loader("templates/environment.ui", self)
         self.mock_env_list.installEventFilter(self)
 
         self.mock_env_cancel_btn.clicked.connect(lambda: self.canceled.emit())
@@ -37,9 +37,6 @@ class SwaVanEnvironment(QWidget):
         self.mock_env_cors_headers.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Fixed)
         self.default_cross_origin_header()
 
-    def __del__(self):
-        print('Destructor SwaVanEnvironment')
-
     def environment_change(self):
         _id = self.mock_env_list.selectedItems()[0].whatsThis()
         _name = self.mock_env_list.selectedItems()[0].text()
@@ -56,7 +53,7 @@ class SwaVanEnvironment(QWidget):
         for _mock_env in mocks:
             item = QListWidgetItem()
             item.setWhatsThis(_mock_env.id)
-            item.setIcon(QIcon("assets/images/icons/environment.ico"))
+            item.setIcon(QIcon(full_path("assets/images/icons/environment.ico")))
             item.setText(f"{_mock_env.name}:{_mock_env.port}")
             self.mock_env_list.addItem(item)
 
@@ -90,7 +87,7 @@ class SwaVanEnvironment(QWidget):
         self.mock_env_cors_headers.setItem(row_position - 1, 0, QTableWidgetItem(_header.key))
         self.mock_env_cors_headers.setItem(row_position - 1, 1, QTableWidgetItem(_header.value))
         _delete = QTableWidgetItem()
-        _delete_icon = QIcon("assets/images/icons/close.ico")
+        _delete_icon = QIcon(full_path("assets/images/icons/close.ico"))
         _delete.setSizeHint(QSize(50, 50))
         _delete.setIcon(_delete_icon)
         self.mock_env_cors_headers.setItem(row_position - 1, 2, _delete)
@@ -125,8 +122,8 @@ class SwaVanEnvironment(QWidget):
     def eventFilter(self, source, event):
         if event.type() == QEvent.Type.ContextMenu and source is self.mock_env_list:
             menu = QMenu()
-            _copy = menu.addAction(QIcon("assets/images/icons/export.ico"), "Export")
-            _remove = menu.addAction(QIcon("assets/images/icons/trash-can.ico"), "Remove")
+            _copy = menu.addAction(QIcon(full_path("assets/images/icons/export.ico")), "Export")
+            _remove = menu.addAction(QIcon(full_path("assets/images/icons/trash-can.ico")), "Remove")
             if source.itemAt(event.pos()):
                 action = menu.exec(event.globalPos())
                 _item = source.itemAt(event.pos())

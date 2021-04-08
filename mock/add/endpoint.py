@@ -5,12 +5,12 @@ from typing import List
 from PyQt6.QtCore import pyqtSignal, Qt, QSize
 from PyQt6.QtGui import QIcon, QIntValidator
 from PyQt6.QtWidgets import QWidget, QHeaderView, QTableWidgetItem, QFileDialog, QDialog, QVBoxLayout
-from PyQt6.uic import loadUi
 
 from mock.modals import Endpoint, Response, Header, Rule
 from mock.services.endpoint import EndpointService
 from shared.codes import HTTP_METHODS, FILTER_BY_OPTIONS, OPERATORS
 from shared.helper import code_to_text, text_to_code
+from shared.widgets.builder import template_loader, full_path
 from shared.widgets.editor import SwaVanCodeEditor
 from stores.cache import SwaVanCache
 
@@ -25,8 +25,7 @@ class SwaVanEndpoint(QWidget):
         self._store = EndpointService.reset()
         if kwargs.get('data'):
             self._store = kwargs.get('data')
-
-        loadUi("templates/endpoint_identifier.ui", self)
+        template_loader("templates/endpoint_identifier.ui", self)
 
         self.body_input = SwaVanCodeEditor()
         self.mock_data_editor_layout.addWidget(self.body_input)
@@ -218,7 +217,7 @@ class SwaVanEndpoint(QWidget):
         self.header_tbl.setItem(row_position, 0, QTableWidgetItem(_header.key))
         self.header_tbl.setItem(row_position, 1, QTableWidgetItem(_header.value))
         delete_text = QTableWidgetItem()
-        delete_text.setIcon(QIcon("assets/images/icons/close.ico"))
+        delete_text.setIcon(QIcon(full_path("assets/images/icons/close.ico")))
         self.header_tbl.setItem(row_position, 2, delete_text)
 
     def rule_row_clicked(self, _select):
@@ -316,7 +315,9 @@ class SwaVanEndpoint(QWidget):
         is_empty = self._store.http_method and self._store.url
         is_duplicate = EndpointService.is_endpoint_duplicate(
             self._store.url,
-            self._store.http_method)
+            self._store.http_method,
+            self._store.id
+        )
 
         if is_empty and not is_duplicate:
             status = EndpointService.save(self._store)

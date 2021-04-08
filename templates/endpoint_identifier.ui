@@ -495,7 +495,7 @@ border-top-left-radius: 0px;
         <number>0</number>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="endpointsPage1_2">
         <layout class="QVBoxLayout" name="verticalLayout_5">
