@@ -131,11 +131,11 @@ class SwaVanEnvironment(QWidget):
         self._mock.ssl_cert_file_url = self.mock_env_ssl_cert_input.text()
         self._mock.use_default_cert = self.mock_env_default_ssl_status.isChecked()
 
-        self._mock.proxy_http_url = self.mock_env_proxy_http_input.setText()
-        self._mock.proxy_https_url = self.mock_env_proxy_https_input.setText()
+        self._mock.proxy_http_url = self.mock_env_proxy_http_input.text()
+        self._mock.proxy_https_url = self.mock_env_proxy_https_input.text()
 
-        self.mock.proxy_http_env = self.mock_env_proxy_http_env_input.text()
-        self.mock.proxy_https_env = self.mock_env_proxy_https_input.text()
+        self._mock.proxy_http_env = self.mock_proxy_http_env_input.text()
+        self._mock.proxy_https_env = self.mock_proxy_https_env_input.text()
         self._mock.enable_proxy = self.mock_env_proxy_status.isChecked()
 
         self._mock.enable_cross_origin = self.mock_env_cors_status.isChecked()
