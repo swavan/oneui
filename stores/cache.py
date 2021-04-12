@@ -1,9 +1,10 @@
-from typing import List
+from typing import List, Dict, Tuple
 
 
 class SwaVanCache:
     __running_environment_ids: List[str] = []
     __selected_environment_id: str = ""
+    __proxy_cred: Dict = {}
 
     @classmethod
     def clear(cls):
@@ -29,3 +30,11 @@ class SwaVanCache:
     @classmethod
     def set_running_env_id(cls, _id: str) -> None:
         cls.__running_environment_ids.append(_id)
+
+    @classmethod
+    def set_proxy_auth(cls, mock_id, username: str, password: str) -> None:
+        cls.__proxy_cred.update({[mock_id]: (username, password,)})
+
+    @classmethod
+    def get_proxy_auth(cls, mock_id) -> Tuple:
+        return cls.__proxy_cred.get(mock_id)

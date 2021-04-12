@@ -61,9 +61,9 @@ class SwaVanRestEndpoint(HTTPEndpoint):
                 _matched_rules = rule_matcher(_response.rules, _header, _query, _body)
                 _and_rules = _response.connector.lower() == "and" and all(_matched_rules)
                 _or_rules = _response.connector.lower() == "or" and any(_matched_rules)
-                _have_rules = len(_response.rules) == 0
-
-                _and_or_rule_matched = RuleStatus.Matched if _and_rules or _or_rules or not _have_rules else RuleStatus.Unmatched
+                _have_rules = len(_response.rules) != 0
+                _and_or_rules_and_has_rules = _and_rules or _or_rules or not _have_rules
+                _and_or_rule_matched = RuleStatus.Matched if _and_or_rules_and_has_rules else RuleStatus.Unmatched
                 _code_rule_matched = filter_by_code(
                     _response.filter_by,
                     query=_query,
@@ -77,7 +77,10 @@ class SwaVanRestEndpoint(HTTPEndpoint):
                             _header,
                             method,
                             _query,
-                            _body, request.cookies)
+                            _body,
+                            request.cookies,
+                            request.app.state.proxies
+                        )
                     elif _response.redirect:
                         __response = await SwaVanRestEndpoint.redirect_response(_response)
                     elif _response.content_path:
@@ -85,7 +88,7 @@ class SwaVanRestEndpoint(HTTPEndpoint):
                     else:
                         __response = await SwaVanRestEndpoint.make_response(_response)
                     break
-            sleeping_period = _endpoint.get('delay') or request.app.state.mock.get('delay') or 0
+            sleeping_period = _endpoint.get('delay') or request.app.state.delay or 0
             time.sleep(sleeping_period)
 
         return __response
@@ -115,11 +118,12 @@ class SwaVanRestEndpoint(HTTPEndpoint):
                             method_name: str,
                             queries: Dict,
                             body: Dict,
-                            cookies: Dict
+                            cookies: Dict,
+                            proxies: Dict
                             ) -> Response:
         _mock_header = cls.header(_response.headers)
         _original_header = request_header
-        proxy_response = proxy_request(_response.redirect, method_name, queries, body, _mock_header, cookies)
+        proxy_response = proxy_request(_response.redirect, method_name, queries, body, _mock_header, cookies, proxies)
         if proxy_response:
             altered: SwaVanHttpResponse = response_modifier(_response.modifier, proxy_response)
             if altered:

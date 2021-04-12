@@ -69,16 +69,19 @@ QTabWidget {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
+
 QTabBar {
   qproperty-drawBase: 0;
   border-radius: 0px;
   margin: 0px;
   padding: 2px;
-  border: 0;
+  border: 0px;
+  background-color: red;
 }
 
+
 QTabBar::tab:top {
-  background-color: #32414B;
+  background: #32414B;
   color: #F0F0F0;
   margin-left: 0px;
   padding-left: 10px;
@@ -87,6 +90,7 @@ QTabBar::tab:top {
   padding-bottom: 12px;
   min-width: 80px;
   border-bottom: 3px solid #32414B;
+  font-weight: bold;
 }
 
 
@@ -254,47 +258,27 @@ QPushButton:hover {
  color: rgba(1, 1, 1, 0.9);
 }
 
-/*
-QTabWidget {
-  background-color: rgba(0, 0, 0, 0.1);
-}
 
-QTabBar {
-  qproperty-drawBase: 0;
-  border-radius: 0px;
-  margin: 0px;
-  padding: 2px;
-  border: 0;
-}
-
-*/
 QToolBar {
   background-color: #32414B;
   color: #F0F0F0;
 }
 
-QTabBar::tab:top {
-  background-color: #32414B;
-  color: #F0F0F0;
-  margin-left: 0px;
-  padding: 10px;
-  min-width: 80px;
-  border-bottom: 3px solid #32414B;
-}
-
+/*
 QTabBar::tab:top:!selected:disabled {
   border-bottom: 3px solid #19232D;
   color: #787878;
   background-color: #19232D;
 }
+*/
 
 QTabBar::tab:top:selected {
-  background-color: #505F69;
-  color: #F0F0F0;
+  border-bottom: 3px solid #148CD2;
 }
 
 QTabBar::tab:top:!selected:hover {
-  border-bottom: 3px solid #148CD2;
+  background-color: #6f7a81;
+  border-bottom: 3px solid #6f7a81;
 }
 
 Line {
@@ -379,4 +363,58 @@ QCheckBox {
     padding: 0px;
     background-color: #0c212d;
     color: rgba(255,255,255, 0.9);
+}
+
+#mockEnvCorsTab, #mockEnvProxyTab, #mockEnvHttpTab{
+  background-color: #505F69;
+  color: #F0F0F0;
+}
+
+#rulesPanel QGroupBox {
+  border: 1px solid #32414B;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+
+
+#resposesFrameControls{
+  border: 1px solid #32414B;
+  padding: 6px;
+  background-color: red;
+  border-bottom: none;
+}
+
+#resposesFrame{
+  border: 1px solid #32414B;
+  padding: 6px;
+  background-color: red;
+  border-top: none;
+}
+
+
+#rulesPanel QComboBox {
+    padding: 5px 10px;
+    background-color: #19232D;
+    selection-background-color: #1464A0;
+}
+
+#rulesPanel QPlainTextEdit {
+ border: 1px solid #576974;
+}
+
+#rulesPanel QLineEdit {
+ border: 1px solid #576974;
+}
+
+#redirectLinkControl {
+ border: 1px solid #576974;
+}
+
+#redirectLinkControl QLineEdit {
+   border: none;
+}
+
+#browserRulesFilterControls{
+ border: 1px solid #576974;
 }

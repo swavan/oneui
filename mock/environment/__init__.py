@@ -1,6 +1,6 @@
 from PyQt6.QtCore import pyqtSignal, QSize, QEvent
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget, QListWidgetItem, QTableWidgetItem, QHeaderView, QMenu
+from PyQt6.QtWidgets import QWidget, QListWidgetItem, QTableWidgetItem, QHeaderView, QMenu, QFileDialog
 
 from mock.modals import Mock, Header
 from mock.services.mock import MockEnvironmentService
@@ -26,6 +26,9 @@ class SwaVanEnvironment(QWidget):
         self.update_env_list()
         self.mock_env_list.itemSelectionChanged.connect(self.editable)
         self.mock_env_list.doubleClicked.connect(lambda: self.environment_change())
+
+        self.mock_env_ssl_key_btn.clicked.connect(self.load_ssl_key)
+        self.mock_env_ssl_cert_btn.clicked.connect(self.load_ssl_cert)
 
         # Cross Origin Header
         self.add_mock_env_cors_btn.clicked.connect(lambda: self.add_header_row())
@@ -61,9 +64,20 @@ class SwaVanEnvironment(QWidget):
         self._mock = _mock
         self.mock_env_name_input.setText(self._mock.name)
         self.mock_env_port_input.setText(self._mock.port)
+        self.mock_env_delay_input.setText(f"{self._mock.delay}")
         self.mock_env_prefix_input.setText(self._mock.prefix)
         self.mock_env_https_status.setChecked(self._mock.enable_https)
+        self.mock_env_ssl_key_input.setText(self._mock.ssl_key_file_url)
+        self.mock_env_ssl_cert_input.setText(self._mock.ssl_cert_file_url)
+        self.mock_env_default_ssl_status.setChecked(self._mock.use_default_cert)
         self.mock_env_cors_status.setChecked(self._mock.enable_cross_origin)
+
+        self.mock_env_proxy_http_input.setText(self._mock.proxy_http_url)
+        self.mock_env_proxy_https_input.setText(self._mock.proxy_https_url)
+
+        self.mock_proxy_http_env_input.setText(self._mock.proxy_http_env)
+        self.mock_proxy_https_env_input.setText(self._mock.proxy_https_env)
+        self.mock_env_proxy_status.setChecked(self._mock.enable_proxy)
 
         self.clear_cors_headers()
         self.mock_env_cors_headers.setRowCount(0)
@@ -108,7 +122,22 @@ class SwaVanEnvironment(QWidget):
         self._mock.name = self.mock_env_name_input.text()
         self._mock.port = self.mock_env_port_input.text()
         self._mock.prefix = self.mock_env_prefix_input.text()
+        try:
+            self._mock.delay = int(self.mock_env_delay_input.text())
+        finally:
+            pass
         self._mock.enable_https = self.mock_env_https_status.isChecked()
+        self._mock.ssl_key_file_url = self.mock_env_ssl_key_input.text()
+        self._mock.ssl_cert_file_url = self.mock_env_ssl_cert_input.text()
+        self._mock.use_default_cert = self.mock_env_default_ssl_status.isChecked()
+
+        self._mock.proxy_http_url = self.mock_env_proxy_http_input.setText()
+        self._mock.proxy_https_url = self.mock_env_proxy_https_input.setText()
+
+        self.mock.proxy_http_env = self.mock_env_proxy_http_env_input.text()
+        self.mock.proxy_https_env = self.mock_env_proxy_https_input.text()
+        self._mock.enable_proxy = self.mock_env_proxy_status.isChecked()
+
         self._mock.enable_cross_origin = self.mock_env_cors_status.isChecked()
         self._mock.cross_origin_allowed_headers = [
             Header(key=self.mock_env_cors_headers.item(i, 0).text(),
@@ -130,13 +159,6 @@ class SwaVanEnvironment(QWidget):
                 _id = _item.whatsThis()
                 if action == _remove:
                     delete_confirmation(self, _id, self.delete)
-                # _id = _item.whatsThis()
-                # if action == _copy:
-                #     copy_endpoint(endpoint_ids=[_id])
-                # elif action == _toggle:
-                #     self.toggle_endpoint(_id)
-                # elif action == _remove:
-                #     self.delete_confirmation(_id)
             return True
         return super().eventFilter(source, event)
 
@@ -144,6 +166,17 @@ class SwaVanEnvironment(QWidget):
         _status = MockEnvironmentService.remove(_id)
         if _status:
             self.update_env_list()
+
+    def load_ssl_key(self):
+        self.mock_env_ssl_key_input.setText(self.file_upload())
+
+    def load_ssl_cert(self):
+        self.mock_env_ssl_cert_input.setText(self.file_upload())
+
+    def file_upload(self) -> str:
+        _file = QFileDialog.getOpenFileName(self, 'Open File', '.')
+        _name, _ = _file
+        return _name
 
     def save(self):
         if self.is_valid():

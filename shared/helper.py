@@ -34,7 +34,7 @@ def response_modifier(function_body, response: Response) -> Union[SwaVanHttpResp
     if 'def swavan_response() -> None:' in _custom:
         _mutable_response = mutable_response(response=response)
         _func_literal = string_func_wrapper(_custom, 'swavan_response')
-        exec(_func_literal, {"swavan": SwaVanHttp(response=_mutable_response)}, {"Dict": Dict, 'json': json})
+        exec(_func_literal, {"swavan": SwaVanHttp(response=_mutable_response),"Dict": Dict, 'json': json}, {"Dict": Dict, 'json': json})
         return _mutable_response
     return None
 

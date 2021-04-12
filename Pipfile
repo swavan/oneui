@@ -17,6 +17,7 @@ py2app = "*"
 pyinstaller = "*"
 pyqt6-sip = "*"
 "pyqt6.sip" = "*"
+validators = "*"
 
 [requires]
 python_version = "3.9"

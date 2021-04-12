@@ -1,9 +1,7 @@
-import os
-
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QMainWindow
-from PyQt6.uic import loadUi
 
+from browser_rule.page import SwaVanBrowserRulePage
 from mock.page import SwaVanMockPage
 from shared.widgets.builder import template_loader, full_path
 
@@ -12,8 +10,9 @@ class SwaVanDashboard(QWidget):
     def __init__(self):
         super(SwaVanDashboard, self).__init__()
         template_loader("templates/swavan.ui", self)
-        mock_page = SwaVanMockPage()
-        self.features.addWidget(mock_page)
+        # _page = SwaVanBrowserRulePage()
+        _page = SwaVanMockPage()
+        self.features.addWidget(_page)
 
 
 class SwaVanMainWindow(QMainWindow):

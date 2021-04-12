@@ -1,7 +1,9 @@
 import copy
 import uuid
+import webbrowser
 from typing import List
 
+import validators
 from PyQt6.QtCore import pyqtSignal, Qt, QSize
 from PyQt6.QtGui import QIcon, QIntValidator
 from PyQt6.QtWidgets import QWidget, QHeaderView, QTableWidgetItem, QFileDialog, QDialog, QVBoxLayout
@@ -84,6 +86,8 @@ class SwaVanEndpoint(QWidget):
         # change response order
         self.move_up_btn.clicked.connect(self.move_up)
         self.move_down_btn.clicked.connect(self.move_down)
+
+        self.btn_open_url.clicked.connect(self.open_redirect)
 
     def move_up(self):
         if len(self._store.responses) > self._response_selected+1:
@@ -221,11 +225,8 @@ class SwaVanEndpoint(QWidget):
         self.header_tbl.setItem(row_position, 2, delete_text)
 
     def rule_row_clicked(self, _select):
-        if _select.column() == 5:
-            self.mock_rule_tbl.removeRow(_select.row())
         if _select.column() == 4:
-            _pre = self.mock_rule_tbl.item(_select.row(), 4).text()
-            self.mock_rule_tbl.setItem(_select.row(), 4, QTableWidgetItem("&&" if _pre == "Or" else "Or"))
+            self.mock_rule_tbl.removeRow(_select.row())
 
     def add_mock_rule(self, _rule: Rule = Rule()):
         self.mock_rule_tbl.insertRow(self.mock_rule_tbl.rowCount())
@@ -266,6 +267,10 @@ class SwaVanEndpoint(QWidget):
         self.reset()
         self._store = endpoint
         self.set_endpoint(endpoint)
+
+    def open_redirect(self):
+        if validators.url(self.redirect_input.text()):
+            webbrowser.open(self.redirect_input.text())
 
     def set_modifier(self, codes: str):
         self._store.responses[self._response_selected].modifier = text_to_code(codes)

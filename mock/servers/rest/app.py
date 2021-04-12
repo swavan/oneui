@@ -1,3 +1,4 @@
+import os
 from typing import Dict, List
 
 from starlette.applications import Starlette
@@ -8,6 +9,7 @@ from starlette.routing import Route
 from mock.modals import Mock
 from mock.servers.rest.endpoint import SwaVanRestEndpoint
 from mock.servers.rest.helper import route_collector
+from stores.cache import SwaVanCache
 
 
 class SwaVanHttp:
@@ -16,6 +18,15 @@ class SwaVanHttp:
         _endpoint_mapper = route_collector(mock.endpoints)
         self.app = SwaVanHttp.setup(_endpoint_mapper, SwaVanHttp.middleware(mock))
         self.app.state.mock = route_collector(mock.endpoints)
+        self.app.state.delay = mock.delay
+        self.app.state.proxies = {}
+        _proxy_http = os.environ.get(mock.proxy_http_env, "")
+        _proxy_https = os.environ.get(mock.proxy_https_env, "")
+        if mock.proxy_http_url and mock.proxy_http_url:
+            _proxy_http = mock.proxy_http_url
+            _proxy_https = mock.proxy_https_url
+        if mock.enable_proxy:
+            self.app.state.proxies.update({"http": _proxy_http, "https": _proxy_https})
 
     @classmethod
     def setup(cls, _endpoint_mapper: Dict, middleware: List[Middleware]) -> Starlette:

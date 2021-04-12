@@ -1,3 +1,3 @@
 {
-    "files": ["templates/endpoints.ui","templates/mock_import.ui","main.py","resources.qrc","assets/icons.qrc","templates/top_bar.ui","templates/endpoint_identifier.ui","templates/mock.ui","templates/environment.ui","form.ui","templates/code_board.ui"]
+    "files": ["resources.qrc","templates/mock.ui","templates/mock_import.ui","assets/icons.qrc","form.ui","templates/mock_server_config.ui","templates/endpoints.ui","templates/top_bar.ui","templates/code_board.ui","templates/dashboard.ui","main.py","templates/endpoint_identifier.ui","templates/environment.ui","templates/browse_rules.ui"]
 }

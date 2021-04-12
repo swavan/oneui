@@ -112,8 +112,16 @@ class Mock:
     prefix: str = ""
     delay: int = 0
     enable_https: bool = False
+    ssl_key_file_url: str = ""
+    ssl_cert_file_url: str = ""
+    use_default_cert: bool = True
     enable_cross_origin: bool = False
     cross_origin_allowed_headers: List[Header] = field(default_factory=list)
+    enable_proxy: bool = False
+    proxy_http_url: str = ""
+    proxy_https_url: str = ""
+    proxy_http_env: str = ""
+    proxy_https_env: str = ""
     endpoints: List[Endpoint] = field(default_factory=list)
     created_at: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S%f")
     viewed_at: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S%f")
@@ -127,7 +135,13 @@ class Mock:
             prefix=mock.get("prefix", ""),
             delay=int(mock.get("delay", 0)),
             enable_https=mock.get("enable_https", False),
+            ssl_key_file_url=mock.get("ssl_key_file_url", ""),
+            ssl_cert_file_url=mock.get("ssl_cert_file_url", ""),
+            use_default_cert=mock.get("use_default_cert", True),
             enable_cross_origin=mock.get("enable_cross_origin", False),
+            enable_proxy=mock.get("enable_proxy", False),
+            proxy_http_url=mock.get("proxy_http_url", ""),
+            proxy_https_url=mock.get("proxy_https_url", ""),
             cross_origin_allowed_headers=[
                 Header.from_dict(_header) for _header in mock.get("cross_origin_allowed_headers", [])],
             endpoints=[Endpoint.from_dict(_endpoint) for _endpoint in mock.get("endpoints", [])],

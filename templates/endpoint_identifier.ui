@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>759</width>
-    <height>533</height>
+    <height>569</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -495,7 +495,7 @@ border-top-left-radius: 0px;
         <number>0</number>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="endpointsPage1_2">
         <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -504,16 +504,6 @@ border-top-left-radius: 0px;
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
-              <widget class="QLineEdit" name="file_url_input">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="placeholderText">
-                <string>Response file url</string>
-               </property>
-              </widget>
-             </item>
-             <item>
               <widget class="QToolButton" name="upload_btn">
                <property name="text">
                 <string>...</string>
@@ -521,6 +511,16 @@ border-top-left-radius: 0px;
                <property name="icon">
                 <iconset>
                  <normaloff>../assets/images/icons/upload.ico</normaloff>../assets/images/icons/upload.ico</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="file_url_input">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="placeholderText">
+                <string>Response file url</string>
                </property>
               </widget>
              </item>
@@ -534,13 +534,6 @@ border-top-left-radius: 0px;
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
-            <widget class="QLineEdit" name="redirect_input">
-             <property name="placeholderText">
-              <string>Redirect i.e. https://api.swavan.com/example/names</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QToolButton" name="redirect_response_modify">
              <property name="text">
               <string>...</string>
@@ -548,6 +541,24 @@ border-top-left-radius: 0px;
              <property name="icon">
               <iconset>
                <normaloff>../assets/images/icons/edit.ico</normaloff>../assets/images/icons/edit.ico</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="redirect_input">
+             <property name="placeholderText">
+              <string>Redirect i.e. https://api.swavan.com/example/names</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="btn_open_url">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../assets/images/icons/external-link.ico</normaloff>../assets/images/icons/external-link.ico</iconset>
              </property>
             </widget>
            </item>

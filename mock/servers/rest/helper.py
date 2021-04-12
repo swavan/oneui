@@ -78,15 +78,30 @@ def rule_matcher(_rules: List[Rule], headers: Dict, queries: Dict, body: Any) ->
     return [__all_match(_rule) for _rule in _rules]
 
 
-def proxy_request(url="", method="", queries={}, body={}, headers={}, cookies={}) -> Union[Response, None]:
+def proxy_request(
+        url,
+        method="",
+        queries: Dict = {},
+        body: Dict = None,
+        headers: Dict = None,
+        cookies: Dict = None,
+        proxies: Dict = None) -> Union[Response, None]:
+    _params = {
+        'url': url,
+        'proxies': proxies,
+        'cookies': cookies,
+        'headers': headers,
+        'data': body,
+        'params': {'q': urlencode(queries)}
+    }
     if method == "get":
-        return requests.get(url, cookies=cookies, headers=headers, data=body, params={'q': urlencode(queries)})
-    elif method == "post":
-        return requests.post(url, cookies=cookies, headers=headers, data=body, params={'q': urlencode(queries)})
-    elif method == "delete":
-        return requests.delete(url, cookies=cookies, headers=headers, data=body, params={'q': urlencode(queries)})
-    elif method == "put":
-        return requests.put(url, cookies=cookies, headers=headers, data=body, params={'q': urlencode(queries)})
-    elif method == "patch":
-        return requests.patch(url, cookies=cookies, headers=headers, data=body, params={'q': urlencode(queries)})
+        return requests.get(**_params)
+    if method == "post":
+        return requests.post(**_params)
+    if method == "delete":
+        return requests.delete(**_params)
+    if method == "put":
+        return requests.put(**_params)
+    if method == "patch":
+        return requests.patch(**_params)
     return None
