@@ -142,6 +142,8 @@ class Mock:
             enable_proxy=mock.get("enable_proxy", False),
             proxy_http_url=mock.get("proxy_http_url", ""),
             proxy_https_url=mock.get("proxy_https_url", ""),
+            proxy_http_env=mock.get("proxy_http_env", ""),
+            proxy_https_env=mock.get("proxy_http_env", ""),
             cross_origin_allowed_headers=[
                 Header.from_dict(_header) for _header in mock.get("cross_origin_allowed_headers", [])],
             endpoints=[Endpoint.from_dict(_endpoint) for _endpoint in mock.get("endpoints", [])],
