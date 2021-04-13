@@ -55,7 +55,8 @@ class Response:
     status: int = 200
     content: str = ""
     content_path: str = ""
-    redirect: str = ""
+    redirect: List[int] = field(default_factory=list)
+    is_modifier_active: bool = False
     modifier: List[int] = field(default_factory=list)
     is_active: bool = True
     headers: List[Header] = field(default_factory=list)
@@ -72,6 +73,7 @@ class Response:
             content=response.get("content", ""),
             content_path=response.get("content_path", ""),
             redirect=response.get("redirect", ""),
+            is_modifier_active=response.get("is_modifier_active", False),
             modifier=response.get("modifier", []),
             headers=[Header.from_dict(header) for header in response.get("headers", [])],
             rules=[Rule.from_dict(rule) for rule in response.get("rules", [])],

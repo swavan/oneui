@@ -1,11 +1,12 @@
-from typing import Dict, List, Any, Union
-from urllib.parse import urlencode
-
-import requests
-from requests import Response
+from dataclasses import asdict
+from typing import Dict, List, Any
+from requests import Response, request, HTTPError
+from uncurl import parse_context
 
 from mock.modals import Rule, Endpoint
+from mock.servers.rest.modal import RequestModal
 from shared.comparable import SwaVanComparable
+from shared.recorder import SwaVanLogRecorder
 
 
 def match_header(_rule: Rule, _headers: Dict):
@@ -37,12 +38,12 @@ def route_collector(endpoints: List[Endpoint]) -> dict:
     for endpoint in endpoints:
         if endpoint.is_active:
             _url_to_method = _endpoints.get(endpoint.url.lower(), {})
-            _method_to_response = _url_to_method.get(endpoint.http_method,  {
+            _method_to_response = _url_to_method.get(endpoint.http_method, {
                 'responses': [],
-                'delay':  endpoint.delay})
+                'delay': endpoint.delay})
 
             _method_to_response["responses"].extend(endpoint.responses)
-
+            _method_to_response["responses"] = list(filter(lambda x: x.is_active,  _method_to_response["responses"]))
             _url_to_method.update({endpoint.http_method.lower(): _method_to_response})
 
             _endpoint = {endpoint.url.lower(): _url_to_method}
@@ -72,36 +73,38 @@ def is_body(x):
 
 def rule_matcher(_rules: List[Rule], headers: Dict, queries: Dict, body: Any) -> List[bool]:
     def __query_match(x): return is_query(x.filter_by) and match_query(x, queries)
+
     def __header_match(x): return is_header(x.filter_by) and match_header(x, headers)
+
     def __body_match(x): return is_body(x.filter_by) and match_body(x, body)
+
     def __all_match(x): return __query_match(x) or __header_match(x) or __body_match(x)
+
     return [__all_match(_rule) for _rule in _rules]
 
 
-def proxy_request(
-        url,
-        method="",
-        queries: Dict = {},
-        body: Dict = None,
-        headers: Dict = None,
-        cookies: Dict = None,
-        proxies: Dict = None) -> Union[Response, None]:
-    _params = {
-        'url': url,
-        'proxies': proxies,
-        'cookies': cookies,
-        'headers': headers,
-        'data': body,
-        'params': {'q': urlencode(queries)}
-    }
-    if method == "get":
-        return requests.get(**_params)
-    if method == "post":
-        return requests.post(**_params)
-    if method == "delete":
-        return requests.delete(**_params)
-    if method == "put":
-        return requests.put(**_params)
-    if method == "patch":
-        return requests.patch(**_params)
-    return None
+def curl_handler(command: str) -> RequestModal:
+    try:
+        removed_unwanted = command.replace("\\", "")
+        _request = parse_context(f"{removed_unwanted}")
+        return RequestModal(
+            method=_request.method,
+            url=_request.url,
+            data=_request.data or None,
+            headers=dict(zip(_request.headers.keys(), _request.headers.values())),
+            cookies=dict(zip(_request.cookies.keys(), _request.cookies.values())),
+            verify=True,
+            auth=_request.auth
+        )
+    except Exception as err:
+        SwaVanLogRecorder.send_log(f"Unable to parse the cURL {err}")
+
+
+def make_http_request(params: RequestModal) -> Response:
+    _params = asdict(params)
+    try:
+        return request(**_params)
+    except HTTPError as http_err:
+        SwaVanLogRecorder.send_log(f'HTTP error occurred: {http_err}')
+    except Exception as err:
+        SwaVanLogRecorder.send_log(f'Other error occurred: {err}')

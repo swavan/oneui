@@ -165,6 +165,7 @@ class SwaVanEndpoint(QWidget):
     def reset(self):
         self.header_tbl.setRowCount(0)
         self.mock_rule_tbl.setRowCount(0)
+        self.is_modifier_active_radio.setChecked(False)
 
     def delete_endpoint(self):
         if len(self._store.responses) > 1:
@@ -183,8 +184,10 @@ class SwaVanEndpoint(QWidget):
     def set_response(self, _response: Response):
         self.file_url_input.setText(_response.content_path)
         self.body_input.text = _response.content
-        self.redirect_input.setText(_response.redirect)
-        self.isEndpointActive.setChecked(_response.is_active)
+        if isinstance(_response.redirect, list):
+            self.redirect_input.setText(code_to_text(_response.redirect))
+        self.is_modifier_active_radio.setChecked(_response.is_modifier_active)
+        self.isResponseActive.setChecked(_response.is_active)
         self.status_code_input.setText(str(_response.status))
         self.set_headers(_response.headers)
         self.cmb_rules_connector.setCurrentText(_response.connector)
@@ -251,8 +254,9 @@ class SwaVanEndpoint(QWidget):
 
         self._store.responses[self._response_selected].content_path = self.file_url_input.text()
         self._store.responses[self._response_selected].content = self.body_input.text
-        self._store.responses[self._response_selected].redirect = self.redirect_input.text()
-        self._store.responses[self._response_selected].is_active = self.isEndpointActive.isChecked()
+        self._store.responses[self._response_selected].redirect = text_to_code(self.redirect_input.text())
+        self._store.responses[self._response_selected].is_modifier_active = self.is_modifier_active_radio.isChecked()
+        self._store.responses[self._response_selected].is_active = self.isResponseActive.isChecked()
         self._store.responses[self._response_selected].status = int(self.status_code_input.text())
         self._store.responses[self._response_selected].headers = _headers
         self._store.responses[self._response_selected].connector = self.cmb_rules_connector.currentText()

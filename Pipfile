@@ -18,6 +18,7 @@ pyinstaller = "*"
 pyqt6-sip = "*"
 "pyqt6.sip" = "*"
 validators = "*"
+uncurl = "*"
 
 [requires]
 python_version = "3.9"

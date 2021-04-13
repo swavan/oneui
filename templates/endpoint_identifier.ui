@@ -535,6 +535,9 @@ border-top-left-radius: 0px;
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
             <widget class="QToolButton" name="redirect_response_modify">
+             <property name="toolTip">
+              <string>Write code to update response</string>
+             </property>
              <property name="text">
               <string>...</string>
              </property>
@@ -547,12 +550,25 @@ border-top-left-radius: 0px;
            <item>
             <widget class="QLineEdit" name="redirect_input">
              <property name="placeholderText">
-              <string>Redirect i.e. https://api.swavan.com/example/names</string>
+              <string>Redirect URL or Paste cURL</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="is_modifier_active_radio">
+             <property name="toolTip">
+              <string>Enabling the response modifier give you permisssion to modify the response data</string>
+             </property>
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QToolButton" name="btn_open_url">
+             <property name="toolTip">
+              <string>Click here to test GET call</string>
+             </property>
              <property name="text">
               <string>...</string>
              </property>
@@ -565,9 +581,9 @@ border-top-left-radius: 0px;
           </layout>
          </item>
          <item>
-          <widget class="QCheckBox" name="isEndpointActive">
+          <widget class="QCheckBox" name="isResponseActive">
            <property name="toolTip">
-            <string>Status of the endpoint ( Enable or disable )</string>
+            <string>Status of the Response ( Enable or disable )</string>
            </property>
            <property name="toolTipDuration">
             <number>0</number>

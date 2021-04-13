@@ -3,6 +3,7 @@ from dataclasses import asdict
 from typing import List
 
 from mock.modals import Endpoint, Response, Header
+from shared.recorder import SwaVanLogRecorder
 from stores import DataStoreService
 
 
@@ -30,7 +31,7 @@ class EndpointService:
         try:
             endpoints = [Endpoint.from_dict(endpoint) for endpoint in DataStoreService.load(cls.__filename)]
         except Exception as e:
-            print(e)
+            SwaVanLogRecorder.send_log(f"Error while loading data: {e}")
         finally:
             return endpoints
 
@@ -48,7 +49,7 @@ class EndpointService:
             DataStoreService.save_all([asdict(_endpoint) for _endpoint in _endpoints], cls.__filename)
             is_saved = True
         except Exception as e:
-            print(e)
+            SwaVanLogRecorder.send_log(f"Error while saving all: {e}")
         finally:
             return is_saved
 
@@ -59,7 +60,7 @@ class EndpointService:
             DataStoreService.save(asdict(_endpoint), cls.__filename)
             is_saved = True
         except Exception as e:
-            print(e)
+            SwaVanLogRecorder.send_log(f"Error on save: {e}")
         finally:
             return is_saved
 

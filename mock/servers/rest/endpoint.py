@@ -1,16 +1,18 @@
 import os
 import time
 from json.decoder import JSONDecodeError
-from typing import List, Dict
+from typing import List, Dict, Union
 
+import validators
 from starlette.endpoints import HTTPEndpoint
 from starlette.requests import Request
 from starlette.responses import Response, RedirectResponse, FileResponse
+from validators import ValidationFailure
 
 from mock.modals import Response as SwaVanResponse, Header
-from mock.servers.rest.helper import rule_matcher, proxy_request
-from mock.servers.rest.modal import SwaVanHttpResponse, RuleStatus
-from shared.helper import response_modifier, filter_by_code
+from mock.servers.rest.helper import rule_matcher, make_http_request, curl_handler
+from mock.servers.rest.modal import SwaVanHttpResponse, RuleStatus, RequestModal
+from shared.helper import response_modifier, filter_by_code, code_to_text
 from shared.recorder import SwaVanLogRecorder
 
 
@@ -56,7 +58,7 @@ class SwaVanRestEndpoint(HTTPEndpoint):
 
         if _endpoint_method_data:
             _endpoint: Dict = _endpoint_method_data.get(method, {'responses': [], 'delay': 0})
-            _responses: List[SwaVanResponse] = _endpoint['responses']
+            _responses: List[SwaVanResponse] = _endpoint.get('responses', '')
             for _response in _responses:
                 _matched_rules = rule_matcher(_response.rules, _header, _query, _body)
                 _and_rules = _response.connector.lower() == "and" and all(_matched_rules)
@@ -71,18 +73,13 @@ class SwaVanRestEndpoint(HTTPEndpoint):
                     body=_body,
                     rule_status=_and_or_rule_matched) if _response.filter_by else _and_or_rule_matched
                 if _code_rule_matched == RuleStatus.Matched:
-                    if _response.redirect and _response.modifier:
-                        __response = await SwaVanRestEndpoint.proxy_request(
+                    if _response.redirect:
+                        __response_data = await SwaVanRestEndpoint.proxy_request(
                             _response,
-                            _header,
                             method,
-                            _query,
-                            _body,
-                            request.cookies,
-                            request.app.state.proxies
-                        )
-                    elif _response.redirect:
-                        __response = await SwaVanRestEndpoint.redirect_response(_response)
+                            request.app.state.proxies)
+                        if __response_data:
+                            __response = __response_data
                     elif _response.content_path:
                         __response = await SwaVanRestEndpoint.file_response(_response)
                     else:
@@ -104,8 +101,8 @@ class SwaVanRestEndpoint(HTTPEndpoint):
         return Response(content=_response.content, status_code=_response.status, headers=cls.header(_response.headers))
 
     @classmethod
-    async def redirect_response(cls, _response: SwaVanResponse) -> Response:
-        return RedirectResponse(_response.redirect, _response.status)
+    async def redirect_response(cls, _redirect: str) -> Response:
+        return RedirectResponse(url=_redirect)
 
     @classmethod
     async def file_response(cls, _response: SwaVanResponse) -> Response:
@@ -113,24 +110,37 @@ class SwaVanRestEndpoint(HTTPEndpoint):
         return FileResponse(path=__path, status_code=_response.status, headers=cls.header(_response.headers))
 
     @classmethod
-    async def proxy_request(cls, _response: SwaVanResponse,
-                            request_header: Dict,
-                            method_name: str,
-                            queries: Dict,
-                            body: Dict,
-                            cookies: Dict,
-                            proxies: Dict
-                            ) -> Response:
+    async def proxy_request(cls, _response: SwaVanResponse, method_name: str, proxies: Dict) -> Union[Response, None]:
         _mock_header = cls.header(_response.headers)
-        _original_header = request_header
-        proxy_response = proxy_request(_response.redirect, method_name, queries, body, _mock_header, cookies, proxies)
-        if proxy_response:
-            altered: SwaVanHttpResponse = response_modifier(_response.modifier, proxy_response)
+        _redirect = code_to_text(_response.redirect)
+        _response_handler = None
+        try:
+            if validators.url(_redirect):
+                if not _response.is_modifier_active:
+                    return await cls.redirect_response(_redirect)
+
+                _response_handler = make_http_request(RequestModal(
+                    url=_redirect,
+                    method=method_name,
+                    proxies=proxies))
+        except ValidationFailure as _:
+            pass
+
+        if _redirect.startswith("curl "):
+            _request_modal = curl_handler(_redirect)
+            _request_modal.proxies = proxies
+            _response_handler = make_http_request(_request_modal)
+
+        if _response.is_modifier_active and _response_handler:
+            altered: SwaVanHttpResponse = response_modifier(_response.modifier, _response_handler)
             if altered:
                 modified_response = Response(
                     content=altered.body,
-                    status_code=altered.status,
-                    headers=altered.headers)
+                    headers=_mock_header,
+                    status_code=altered.status)
                 modified_response.headers["content-length"] = "{}".format(len(altered.body))
                 return modified_response
-        return Response(content=proxy_response.text, status_code=proxy_response.status_code)
+        return Response(
+            content=_response_handler.content,
+            headers=_mock_header,
+            status_code=_response_handler.status_code)
