@@ -8,6 +8,7 @@ from requests import Response
 
 from mock.servers.rest.modal import SwaVanHttpResponse, SwaVanHttp, SwaVanHttpRequest, RuleStatus
 from mock.services.endpoint import EndpointService
+from shared.recorder import SwaVanLogRecorder
 from shared.widgets.builder import full_path
 
 
@@ -34,7 +35,11 @@ def response_modifier(function_body, response: Response) -> Union[SwaVanHttpResp
     if 'def swavan_response() -> None:' in _custom:
         _mutable_response = mutable_response(response=response)
         _func_literal = string_func_wrapper(_custom, 'swavan_response')
-        exec(_func_literal, {"swavan": SwaVanHttp(response=_mutable_response),"Dict": Dict, 'json': json}, {"Dict": Dict, 'json': json})
+        try:
+            exec(_func_literal, {"swavan": SwaVanHttp(response=_mutable_response),"Dict": Dict, 'json': json}, {"Dict": Dict, 'json': json})
+        except Exception as err:
+            SwaVanLogRecorder.send_log(f"Error occurred while execution custom code {err}")
+            SwaVanLogRecorder.send_log(f"Custom code change didn't applied")
         return _mutable_response
     return None
 
