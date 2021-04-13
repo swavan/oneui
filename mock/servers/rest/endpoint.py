@@ -3,6 +3,7 @@ import time
 from json.decoder import JSONDecodeError
 from typing import List, Dict, Union
 
+import requests.exceptions
 import validators
 from starlette.endpoints import HTTPEndpoint
 from starlette.requests import Request
@@ -74,12 +75,17 @@ class SwaVanRestEndpoint(HTTPEndpoint):
                     rule_status=_and_or_rule_matched) if _response.filter_by else _and_or_rule_matched
                 if _code_rule_matched == RuleStatus.Matched:
                     if _response.redirect:
-                        __response_data = await SwaVanRestEndpoint.proxy_request(
-                            _response,
-                            method,
-                            request.app.state.proxies)
-                        if __response_data:
-                            __response = __response_data
+                        try:
+                            __response_data = await SwaVanRestEndpoint.proxy_request(
+                                _response,
+                                method,
+                                request.app.state.proxies)
+                            if __response_data:
+                                __response = __response_data
+                        except requests.exceptions.ConnectionError as err:
+                            __response.status_code = 500
+                            __response.body = b"Unable to redirect request, please check the log message"
+                            SwaVanLogRecorder.send_log(f"Unable to redirect request {err}")
                     elif _response.content_path:
                         __response = await SwaVanRestEndpoint.file_response(_response)
                     else:
