@@ -107,7 +107,7 @@ RULES_FOR = {
 
 OPERATORS = {
     "e": "Equal",
-    "c": "Contain",
+    "c": "Contains",
     "w": "Wildcard",
     "p": "Prefix",
     "s": "Suffix"

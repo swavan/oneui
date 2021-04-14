@@ -41,7 +41,7 @@ class SwaVanComparable:
     def wild_card(cls, compare_with, wild_expression) -> bool:
         if not compare_with:
             return False
-        return True if re.match(compare_with, wild_expression) else False
+        return True if re.match(wild_expression, compare_with) else False
 
     @classmethod
     def action(cls, operator: str, compare_with: any, value: any) -> bool:
