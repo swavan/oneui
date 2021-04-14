@@ -9,15 +9,13 @@ from starlette.routing import Route
 from mock.modals import Mock
 from mock.servers.rest.endpoint import SwaVanRestEndpoint
 from mock.servers.rest.helper import route_collector
-from stores.cache import SwaVanCache
 
 
 class SwaVanHttp:
-
     def __init__(self, mock: Mock):
-        _endpoint_mapper = route_collector(mock.endpoints)
+        _endpoint_mapper = route_collector(mock.prefix, mock.endpoints)
         self.app = SwaVanHttp.setup(_endpoint_mapper, SwaVanHttp.middleware(mock))
-        self.app.state.mock = route_collector(mock.endpoints)
+        self.app.state.mock = _endpoint_mapper
         self.app.state.delay = mock.delay
         self.app.state.proxies = {}
         _proxy_http = os.environ.get(mock.proxy_http_env, "")
@@ -46,14 +44,18 @@ class SwaVanHttp:
         _cross_origin_allowed_headers = dict(zip(list(map(lambda x: x.key.lower(), mock.cross_origin_allowed_headers)),
                                                  list(map(lambda x: x.value, mock.cross_origin_allowed_headers))))
         _middlewares = [
-            Middleware(TrustedHostMiddleware,
-                       allowed_hosts=[_cross_origin_allowed_headers.get("access-control-allow-host", "*")]),
             Middleware(
-                CORSMiddleware,
-                allow_methods=[_cross_origin_allowed_headers.get("access-control-allow-methods", "*")],
-                allow_headers=[_cross_origin_allowed_headers.get("access-control-allow-headers", "*")],
-                allow_origins=[_cross_origin_allowed_headers.get("access-control-allow-origin", "*")],
-                allow_credentials=[_cross_origin_allowed_headers.get("access-control-allow-credentials", False)]
-            ),
+                TrustedHostMiddleware,
+                allowed_hosts=[_cross_origin_allowed_headers.get("access-control-allow-host", "*")]),
         ]
+        if mock.enable_cross_origin:
+            _middlewares.append(
+                Middleware(
+                    CORSMiddleware,
+                    allow_methods=[_cross_origin_allowed_headers.get("access-control-allow-methods", "*")],
+                    allow_headers=[_cross_origin_allowed_headers.get("access-control-allow-headers", "*")],
+                    allow_origins=[_cross_origin_allowed_headers.get("access-control-allow-origin", "*")],
+                    allow_credentials=[_cross_origin_allowed_headers.get("access-control-allow-credentials", False)]
+                )
+            )
         return _middlewares

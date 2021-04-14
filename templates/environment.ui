@@ -259,6 +259,9 @@
                      <height>16777215</height>
                     </size>
                    </property>
+                   <property name="toolTip">
+                    <string>Global response delay</string>
+                   </property>
                    <property name="inputMask">
                     <string/>
                    </property>
@@ -286,7 +289,7 @@
                 <enum>QTabWidget::Rounded</enum>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="usesScrollButtons">
                 <bool>true</bool>

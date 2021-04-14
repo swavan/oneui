@@ -79,7 +79,6 @@ class SwaVanMockPage(QWidget):
 
     def import_mocks(self):
         _endpoint = SwaVanMockImport()
-
         _endpoints = self.findChild(SwaVanMockEndpoints, "SwaVanMockEndpoints")
         _endpoint.saved.connect(_endpoints.update_view)
         self._dialog_handler(SwaVanMockImport())

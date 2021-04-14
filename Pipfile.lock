@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3dec1ad94c4205e02ae7aadab0c7da47b7d1339b53d05ad3454074e776e1d3ed"
+            "sha256": "b8815ef594d94a4751e0cdc846fb47cd7e7b6d3807b1db42e447113a9d2ed52c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -115,6 +115,12 @@
             ],
             "version": "==2021.1"
         },
+        "pyperclip": {
+            "hashes": [
+                "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"
+            ],
+            "version": "==1.8.2"
+        },
         "pyqt6": {
             "hashes": [
                 "sha256:0cd7a23adcb302eae0454956f8d4b0d6ad016eaf2c72bb3a3ba3680944e38838",
@@ -211,6 +217,14 @@
             ],
             "index": "pypi",
             "version": "==0.14.2"
+        },
+        "uncurl": {
+            "hashes": [
+                "sha256:530c9bbd4d118f4cde6194165ff484cc25b0661cd256f19e9d5fcb53fc077790",
+                "sha256:5961e93f07a5c9f2ef8ae4245bd92b0a6ce503c851de980f5b70080ae74cdc59"
+            ],
+            "index": "pypi",
+            "version": "==0.0.11"
         },
         "urllib3": {
             "hashes": [

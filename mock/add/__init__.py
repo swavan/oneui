@@ -1,4 +1,5 @@
 import json
+import uuid
 from json.decoder import JSONDecodeError
 
 from PyQt6.QtCore import pyqtSignal
@@ -8,6 +9,7 @@ from mock.add.endpoint import SwaVanEndpoint
 from mock.modals import Endpoint
 from mock.services.endpoint import EndpointService
 from shared.widgets.builder import template_loader
+from stores.cache import SwaVanCache
 
 
 class SwaVanMockImport(QWidget):
@@ -44,7 +46,12 @@ class SwaVanMockImport(QWidget):
             pass
 
     def save(self):
-        _rows = self.validated_endpoints()
+        _rows = []
+        for _row in self.validated_endpoints():
+            _row.id = str(uuid.uuid4())
+            _row.pid = SwaVanCache.get_selected_env()
+            _rows.append(_row)
+
         if len(_rows) > 0:
             _status = EndpointService.save_all(_rows)
             if _status:

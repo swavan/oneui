@@ -4,6 +4,7 @@ from PyQt6.QtCore import QThread
 
 from mock.modals import Mock
 from mock.servers.config import SwaVanMockTask, ServerTypes
+from mock.servers.rest.helper import port_is_busy
 from mock.servers.rest.service import SwaVanRestMockServer
 
 
@@ -49,11 +50,12 @@ class SwaVanMockServerService:
 
     @classmethod
     def start(cls, _mock: Mock, _type: ServerTypes):
-        worker = SwaVanMockWorker()
-        position = len(cls._workers)
-        if _type == ServerTypes.REST:
-            _task = SwaVanRestMockServer(_mock)
-            worker.assign(_task)
+        if not port_is_busy("localhost", int(_mock.port)):
+            worker = SwaVanMockWorker()
+            position = len(cls._workers)
+            if _type == ServerTypes.REST:
+                _task = SwaVanRestMockServer(_mock)
+                worker.assign(_task)
 
-        cls._workers.append(worker)
-        cls._workers[position].start()
+            cls._workers.append(worker)
+            cls._workers[position].start()

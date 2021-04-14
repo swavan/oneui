@@ -12,6 +12,7 @@ from mock.modals import Endpoint, Response, Header, Rule
 from mock.services.endpoint import EndpointService
 from shared.codes import HTTP_METHODS, FILTER_BY_OPTIONS, OPERATORS
 from shared.helper import code_to_text, text_to_code
+from shared.recorder import SwaVanLogRecorder
 from shared.widgets.builder import template_loader, full_path
 from shared.widgets.editor import SwaVanCodeEditor
 from stores.cache import SwaVanCache
@@ -192,6 +193,7 @@ class SwaVanEndpoint(QWidget):
         self.set_headers(_response.headers)
         self.cmb_rules_connector.setCurrentText(_response.connector)
         self.set_rules(_response.rules)
+        self.note_input.setText(_response.note)
 
     def set_headers(self, _headers: List[Header]):
         self.header_tbl.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
@@ -261,6 +263,7 @@ class SwaVanEndpoint(QWidget):
         self._store.responses[self._response_selected].headers = _headers
         self._store.responses[self._response_selected].connector = self.cmb_rules_connector.currentText()
         self._store.responses[self._response_selected].rules = _rules
+        self._store.responses[self._response_selected].note = self.note_input.text()
 
     def update_endpoint(self):
         self._store.http_method = self.http_method_combo.currentText()
@@ -318,19 +321,22 @@ class SwaVanEndpoint(QWidget):
         _dialog.show()
 
     def save(self):
-        self.update_endpoint()
-        self.update_response()
-        self._store.pid = SwaVanCache.get_selected_env()
-        is_empty = self._store.http_method and self._store.url
-        is_duplicate = EndpointService.is_endpoint_duplicate(
-            self._store.url,
-            self._store.http_method,
-            self._store.id
-        )
-
-        if is_empty and not is_duplicate:
-            status = EndpointService.save(self._store)
-            if status:
-                self._response_selected = 0
-                self.update_view(EndpointService.reset())
-                self.saved.emit()
+        try:
+            self.update_endpoint()
+            self.update_response()
+            self._store.pid = SwaVanCache.get_selected_env()
+            is_empty = self._store.http_method and self._store.url
+            is_duplicate = EndpointService.is_endpoint_duplicate(
+                self._store.url,
+                self._store.http_method,
+                self._store.id,
+                self._store.pid
+            )
+            if is_empty and not is_duplicate:
+                status = EndpointService.save(self._store)
+                if status:
+                    self._response_selected = 0
+                    self.update_view(EndpointService.reset())
+                    self.saved.emit()
+        except Exception as err:
+            SwaVanLogRecorder.send_log(f"Error while saving the data: {err}")

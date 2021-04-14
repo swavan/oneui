@@ -113,6 +113,7 @@ class SwaVanRestEndpoint(HTTPEndpoint):
     @classmethod
     async def file_response(cls, _response: SwaVanResponse) -> Response:
         __path = os.path.join(_response.content_path)
+
         return FileResponse(path=__path, status_code=_response.status, headers=cls.header(_response.headers))
 
     @classmethod

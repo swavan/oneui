@@ -36,10 +36,11 @@ class EndpointService:
             return endpoints
 
     @classmethod
-    def is_endpoint_duplicate(cls, url: str, method: str, id: str) -> bool:
-        __endpoints = list(filter(lambda x: method.lower() == x.http_method.lower()
-                                            and url.lower() == x.url.lower()
-                                            and id != x.id, cls.load()))
+    def is_endpoint_duplicate(cls, url: str, method: str, _id: str, pid: str) -> bool:
+        __endpoints = list(
+            filter(
+                lambda x: method.lower() == x.http_method.lower() and url.lower() == x.url.lower() and pid == x.pid and _id != x.id,
+                cls.load()))
         return len(__endpoints) > 0
 
     @classmethod

@@ -148,7 +148,7 @@
        <item>
         <widget class="QLineEdit" name="response_info_input">
          <property name="placeholderText">
-          <string>Infomation</string>
+          <string>URL Infomation</string>
          </property>
         </widget>
        </item>
@@ -217,6 +217,9 @@ border-bottom-left-radius: 0px;
                 <height>0</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>Change response order up</string>
+              </property>
               <property name="text">
                <string>...</string>
               </property>
@@ -239,6 +242,9 @@ border-bottom-left-radius: 0px;
                 <width>15</width>
                 <height>0</height>
                </size>
+              </property>
+              <property name="toolTip">
+               <string>Change response order down</string>
               </property>
               <property name="text">
                <string>...</string>
@@ -499,6 +505,13 @@ border-top-left-radius: 0px;
        </property>
        <widget class="QWidget" name="endpointsPage1_2">
         <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QLineEdit" name="note_input">
+           <property name="placeholderText">
+            <string> Note</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>

@@ -1,3 +1,5 @@
+import webbrowser
+
 from PyQt6.QtCore import pyqtSignal, QSize, QEvent
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QTableWidgetItem, QHeaderView, QMenu, QFileDialog
@@ -30,6 +32,8 @@ class SwaVanEnvironment(QWidget):
         self.mock_env_ssl_key_btn.clicked.connect(self.load_ssl_key)
         self.mock_env_ssl_cert_btn.clicked.connect(self.load_ssl_cert)
 
+        self.mock_env_cert_download_btn.clicked.connect(SwaVanEnvironment.view_certificate)
+
         # Cross Origin Header
         self.add_mock_env_cors_btn.clicked.connect(lambda: self.add_header_row())
         self.mock_env_cors_headers.cellClicked.connect(
@@ -39,6 +43,13 @@ class SwaVanEnvironment(QWidget):
         self.mock_env_cors_headers.horizontalHeader().setMinimumSectionSize(10)
         self.mock_env_cors_headers.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Fixed)
         self.default_cross_origin_header()
+
+    @classmethod
+    def view_certificate(cls):
+        path = full_path("mock/servers/rest/certs/swavan.crt")
+        _update_url = path.replace("/", "//")
+        print(_update_url)
+        webbrowser.open(f"{_update_url}", autoraise=True)
 
     def environment_change(self):
         _id = self.mock_env_list.selectedItems()[0].whatsThis()

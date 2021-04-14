@@ -1,5 +1,8 @@
+import errno
+import socket
 from dataclasses import asdict
 from typing import Dict, List, Any
+
 from requests import Response, request, HTTPError
 from uncurl import parse_context
 
@@ -17,6 +20,7 @@ def match_header(_rule: Rule, _headers: Dict):
 
 
 def match_query(_rule: Rule, _query: Dict):
+    print(f"_rule.operator: {_rule.operator},  _query.get(_rule.field): {_query.get(_rule.field)}, _rule.value: {_rule.value}")
     return SwaVanComparable.action(
         _rule.operator,
         _query.get(_rule.field),
@@ -33,7 +37,7 @@ def match_body(_rule: Rule, _data):
             return SwaVanComparable.action(_rule.operator, _data, _rule.value)
 
 
-def route_collector(endpoints: List[Endpoint]) -> dict:
+def route_collector(prefix: str, endpoints: List[Endpoint]) -> dict:
     _endpoints = {}
     for endpoint in endpoints:
         if endpoint.is_active:
@@ -43,10 +47,10 @@ def route_collector(endpoints: List[Endpoint]) -> dict:
                 'delay': endpoint.delay})
 
             _method_to_response["responses"].extend(endpoint.responses)
-            _method_to_response["responses"] = list(filter(lambda x: x.is_active,  _method_to_response["responses"]))
+            _method_to_response["responses"] = list(filter(lambda x: x.is_active, _method_to_response["responses"]))
             _url_to_method.update({endpoint.http_method.lower(): _method_to_response})
 
-            _endpoint = {endpoint.url.lower(): _url_to_method}
+            _endpoint = {f"{prefix.lower()}{endpoint.url.lower()}": _url_to_method}
             _endpoints.update(_endpoint)
     return _endpoints
 
@@ -108,3 +112,17 @@ def make_http_request(params: RequestModal) -> Response:
         SwaVanLogRecorder.send_log(f'HTTP error occurred: {http_err}')
     except Exception as err:
         SwaVanLogRecorder.send_log(f'Other error occurred: {err}')
+
+
+def port_is_busy(host: str, port: int) -> bool:
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.bind((host, port))
+        return False
+    except socket.error as e:
+        if e.errno == errno.EADDRINUSE:
+            return True
+        else:
+            return False
+    finally:
+        s.close()

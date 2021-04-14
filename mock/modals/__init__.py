@@ -62,6 +62,7 @@ class Response:
     headers: List[Header] = field(default_factory=list)
     rules: List[Rule] = field(default_factory=list)
     connector: str = "and"
+    note: str = ""
     filter_by: List[int] = field(default_factory=list)
     created_at: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -78,6 +79,7 @@ class Response:
             headers=[Header.from_dict(header) for header in response.get("headers", [])],
             rules=[Rule.from_dict(rule) for rule in response.get("rules", [])],
             connector=response.get("connector", "and"),
+            note=response.get("note", ""),
             filter_by=response.get("filter_by", []),
             created_at=response.get("created_at"))
 

@@ -4,6 +4,7 @@ from typing import List, Union
 
 from mock.modals import Mock as MockModal, Header
 from mock.services.endpoint import EndpointService
+from shared.recorder import SwaVanLogRecorder
 from stores import DataStoreService
 
 
@@ -22,7 +23,7 @@ class MockEnvironmentService:
             return _mocks[0]
 
     @classmethod
-    def load_by_id(cls, _id: str) -> MockModal:
+    def load_by_id(cls, _id: str) -> Union[MockModal, None]:
         try:
             for _mock in cls.load():
                 if _mock.id == _id:
@@ -54,7 +55,7 @@ class MockEnvironmentService:
             DataStoreService.save(asdict(_mock), cls.__filename)
             is_saved = True
         except IOError as err:
-            print("save: ", err)
+            SwaVanLogRecorder.send_log(f"Error on mock save {err}")
         finally:
             return is_saved
 

@@ -28,7 +28,7 @@ class SwaVanCodeEditor(QWidget):
         # --------------------
         self.__editor.setTabWidth(4)
         self.__editor.setIndentationGuides(True)
-        self.__editor.setTabIndents(True)
+        self.__editor.setTabIndents(False)
         self.__editor.setAutoIndent(True)
         self.__editor.setWrapMode(QsciScintilla.WrapMode.WrapWord)
         self.__editor.setWrapVisualFlags(QsciScintilla.WrapVisualFlag.WrapFlagByText)
@@ -84,6 +84,8 @@ class SwaVanCodeEditor(QWidget):
 
     @property
     def text(self) -> str:
+        if self.__editor.lexer() == QsciLexerPython:
+            print("Yes")
         return self.__editor.text()
 
     @text.setter
