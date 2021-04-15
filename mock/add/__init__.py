@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import QWidget
 from mock.add.endpoint import SwaVanEndpoint
 from mock.modals import Endpoint
 from mock.services.endpoint import EndpointService
+from shared.recorder import SwaVanLogRecorder
 from shared.widgets.builder import template_loader
 from stores.cache import SwaVanCache
 
@@ -55,4 +56,5 @@ class SwaVanMockImport(QWidget):
         if len(_rows) > 0:
             _status = EndpointService.save_all(_rows)
             if _status:
+                SwaVanLogRecorder.send_log(f"{len(_rows)} endpoint/s imported")
                 self.saved.emit()

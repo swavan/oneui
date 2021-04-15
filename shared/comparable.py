@@ -62,4 +62,3 @@ class SwaVanComparable:
         elif operator.lower() == "wildcard":
             return cls.wild_card(compare_with, value)
         return False
-

@@ -4,6 +4,7 @@ from typing import Dict, List
 from starlette.applications import Starlette
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
+from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from starlette.routing import Route
 from mock.modals import Mock
@@ -55,7 +56,9 @@ class SwaVanHttp:
                     allow_methods=[_cross_origin_allowed_headers.get("access-control-allow-methods", "*")],
                     allow_headers=[_cross_origin_allowed_headers.get("access-control-allow-headers", "*")],
                     allow_origins=[_cross_origin_allowed_headers.get("access-control-allow-origin", "*")],
-                    allow_credentials=[_cross_origin_allowed_headers.get("access-control-allow-credentials", False)]
+                    allow_credentials=[_cross_origin_allowed_headers.get("access-control-allow-credentials", False)],
                 )
             )
+        if mock.enable_https:
+            _middlewares.append(Middleware(HTTPSRedirectMiddleware))
         return _middlewares

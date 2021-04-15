@@ -46,8 +46,10 @@ class EndpointService:
     @classmethod
     def save_all(cls, _endpoints: List[Endpoint]) -> bool:
         is_saved = False
+
         try:
-            DataStoreService.save_all([asdict(_endpoint) for _endpoint in _endpoints], cls.__filename)
+            DataStoreService.save_all([asdict(_endpoint) for _endpoint in _endpoints if not cls.is_endpoint_duplicate(
+                _endpoint.url, _endpoint.http_method, _endpoint.id, _endpoint.pid)], cls.__filename)
             is_saved = True
         except Exception as e:
             SwaVanLogRecorder.send_log(f"Error while saving all: {e}")

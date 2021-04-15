@@ -78,10 +78,10 @@ class SwaVanMockPage(QWidget):
         self._animation.start()
 
     def import_mocks(self):
-        _endpoint = SwaVanMockImport()
+        _mockImport = SwaVanMockImport()
         _endpoints = self.findChild(SwaVanMockEndpoints, "SwaVanMockEndpoints")
-        _endpoint.saved.connect(_endpoints.update_view)
-        self._dialog_handler(SwaVanMockImport())
+        _mockImport.saved.connect(_endpoints.update_view)
+        self._dialog_handler(_mockImport)
 
     def environment_settings(self):
         _env = SwaVanEnvironment()

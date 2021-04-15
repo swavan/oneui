@@ -289,7 +289,7 @@
                 <enum>QTabWidget::Rounded</enum>
                </property>
                <property name="currentIndex">
-                <number>2</number>
+                <number>0</number>
                </property>
                <property name="usesScrollButtons">
                 <bool>true</bool>
@@ -302,7 +302,7 @@
                  <string notr="true"/>
                 </property>
                 <attribute name="title">
-                 <string>Http</string>
+                 <string>Https Setting</string>
                 </attribute>
                 <layout class="QVBoxLayout" name="verticalLayout_3">
                  <property name="spacing">
@@ -436,7 +436,7 @@ font-size: 14px;</string>
 font-weight: bold;</string>
                    </property>
                    <property name="text">
-                    <string>Is Active</string>
+                    <string>Enable HTTPS</string>
                    </property>
                   </widget>
                  </item>
@@ -474,22 +474,6 @@ font-weight: bold;</string>
                   <widget class="Line" name="line_4">
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="mock_env_cert_download_btn">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="toolTip">
-                    <string>Download SwaVan SSL and mark as trusted</string>
-                   </property>
-                   <property name="text">
-                    <string> Defaut Certificate </string>
                    </property>
                   </widget>
                  </item>
@@ -609,7 +593,7 @@ font-weight: bold;</string>
 font-weight: bold;</string>
                    </property>
                    <property name="text">
-                    <string>Is Active</string>
+                    <string>Enable CORS</string>
                    </property>
                   </widget>
                  </item>
@@ -682,7 +666,7 @@ font-weight: bold;</string>
 font-weight: bold;</string>
                    </property>
                    <property name="text">
-                    <string>Is Active ?</string>
+                    <string>Enable Proxy config</string>
                    </property>
                   </widget>
                  </item>

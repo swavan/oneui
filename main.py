@@ -1,3 +1,4 @@
+import os
 import sys
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication
@@ -17,6 +18,8 @@ if __name__ == "__main__":
     with open(full_path("assets/style/dark.qss"), 'r') as file:
         qss = file.read()
         app.setStyleSheet(qss)
+        if os.path.exists(full_path("data/logs/swavan.log")):
+            open(full_path("data/logs/swavan.log"), 'w').close()
 
     widget = SwaVanMainWindow()
     widget.show()
