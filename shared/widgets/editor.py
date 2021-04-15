@@ -5,6 +5,7 @@ from PyQt6.Qsci import QsciScintilla, QsciLexerJSON, QsciLexerPython, QsciLexerH
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import QWidget
 
+from shared.recorder import SwaVanLogRecorder
 from shared.widgets.builder import template_loader
 
 
@@ -75,10 +76,8 @@ class SwaVanCodeEditor(QWidget):
             try:
                 json_object = json.loads(self.text)
                 self.text = json.dumps(json_object, indent=4)
-            except (Exception):
-                pass
-            finally:
-                pass
+            except Exception as err:
+                SwaVanLogRecorder.send_log(f"Error while converting data into JSON: {err}")
 
     @property
     def text(self) -> str:
