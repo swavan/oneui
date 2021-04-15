@@ -13,13 +13,12 @@ from shared.widgets.builder import full_path
 
 
 def string_func_wrapper(code: str, func_name):
+    alter_existing_code = code.replace('\n', '\n    ')
     return f'''
-{code}
-try:
+def SwaVanCustomFunc():
+    {alter_existing_code}
     {func_name}()
-except Exception as e:
-    print(e)
-    '''
+SwaVanCustomFunc()'''
 
 
 def mutable_response(response: Response) -> SwaVanHttpResponse:
@@ -35,6 +34,7 @@ def response_modifier(function_body, response: Response) -> Union[SwaVanHttpResp
     if 'def swavan_response() -> None:' in _custom:
         _mutable_response = mutable_response(response=response)
         _func_literal = string_func_wrapper(_custom, 'swavan_response')
+        print(_func_literal)
         try:
             exec(_func_literal, {"swavan": SwaVanHttp(response=_mutable_response),"Dict": Dict, 'json': json}, {"Dict": Dict, 'json': json})
         except Exception as err:

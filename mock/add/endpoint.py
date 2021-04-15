@@ -47,7 +47,9 @@ class SwaVanEndpoint(QWidget):
         self.redirect_response_modify.clicked.connect(lambda: self.code_editor("modifier"))
         self.advaance_rule_codes_btn.clicked.connect(lambda: self.code_editor("filter_by"))
 
-        self.http_method_combo.addItems(map(lambda x: x.title(), HTTP_METHODS.values()))
+        self.http_method_combo.addItems(
+            map(lambda x: x.title(),
+                [ _method for _method in HTTP_METHODS.values() if _method.lower() != 'all']))
         self.filter_by_combo.addItems(FILTER_BY_OPTIONS.values())
         self.rule_operator_combo.addItems(OPERATORS.values())
         self.set_endpoint(self._store)
@@ -295,6 +297,7 @@ class SwaVanEndpoint(QWidget):
         _editor = SwaVanCodeEditor()
         _editor.form_view()
         _editor.update_lexer("python")
+        _editor.select_language("Python")
         _dialog = QDialog(self)
         if editor_associated == "modifier":
             _editor.text = self.get_modifier()

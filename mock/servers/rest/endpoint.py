@@ -25,12 +25,15 @@ class SwaVanRestEndpoint(HTTPEndpoint):
         return await self.handler(request, "get")
 
     async def post(self, request):
+        SwaVanLogRecorder.send_log(f"Post request made")
         return await self.handler(request, "post")
 
     async def put(self, request):
+        SwaVanLogRecorder.send_log(f"Put request made")
         return await self.handler(request, "put")
 
     async def delete(self, request):
+        SwaVanLogRecorder.send_log(f"Delete request made")
         return await self.handler(request, "delete")
 
     async def patch(self, request):

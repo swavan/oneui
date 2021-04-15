@@ -1,11 +1,9 @@
 import json
-import os
 
 from PyQt6.Qsci import QsciScintilla, QsciLexerJSON, QsciLexerPython, QsciLexerHTML, QsciLexerYAML, QsciLexerXML, \
     QsciLexerJavaScript
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import QWidget
-from PyQt6.uic import loadUi
 
 from shared.widgets.builder import template_loader
 
@@ -84,8 +82,6 @@ class SwaVanCodeEditor(QWidget):
 
     @property
     def text(self) -> str:
-        if self.__editor.lexer() == QsciLexerPython:
-            print("Yes")
         return self.__editor.text()
 
     @text.setter
@@ -120,4 +116,7 @@ class SwaVanCodeEditor(QWidget):
         self.editor_close.emit()
 
     def save(self):
-        self.editor_save.emit(self.text)
+        if self.language_list_combo.currentText().lower() == "python":
+            self.editor_save.emit(self.text.replace('\t', '    '))
+        else:
+            self.editor_save.emit(self.text)

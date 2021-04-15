@@ -1,9 +1,6 @@
-import os
-
 from PyQt6.QtCore import QEvent, pyqtSignal
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QMenu
-from PyQt6.uic import loadUi
 
 from mock.modals import Endpoint
 from mock.services.endpoint import EndpointService

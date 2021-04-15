@@ -31,7 +31,7 @@ class SwaVanHttp:
     def setup(cls, _endpoint_mapper: Dict, middleware: List[Middleware]) -> Starlette:
         routes = map(lambda url: SwaVanHttp.make_route(url, _endpoint_mapper.get(url)),
                      list(_endpoint_mapper.keys()))
-        return Starlette(debug=True, routes=list(routes), middleware=middleware)
+        return Starlette(debug=False, routes=list(routes), middleware=middleware)
 
     @classmethod
     def make_route(cls, url, mapper) -> Route:
