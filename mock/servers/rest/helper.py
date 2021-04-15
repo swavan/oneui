@@ -20,28 +20,33 @@ def match_header(_rule: Rule, _headers: Dict):
 
 
 def match_query(_rule: Rule, _query: Dict):
-    print(f"_rule.operator: {_rule.operator},  _query.get(_rule.field): {_query.get(_rule.field)}, _rule.value: {_rule.value}")
     return SwaVanComparable.action(
         _rule.operator,
         _query.get(_rule.field),
         _rule.value)
 
 
-def match_body(_rule: Rule, _data):
-    for field in _rule.field.split("."):
-        if isinstance(_data, list) and len(_data) > 0:
-            _data = _data[int(field)]
-        elif isinstance(_data, dict):
-            _data = _data.get(field, None)
-        elif not isinstance(_data, dict):
-            return SwaVanComparable.action(_rule.operator, _data, _rule.value)
+def match_body(_rule: Rule, _data) -> bool:
+    _operator, _value = None, None
+    _fields = _rule.field.split(".")
+    try:
+        for field in _fields:
+            if isinstance(_data, list) and len(_data) > 0:
+                _data = _data[int(field)]
+            elif isinstance(_data, dict):
+                _data = _data.get(field, None)
+            _operator, _value = _rule.operator, _rule.value
+        return SwaVanComparable.action(_rule.operator, _data, _rule.value)
+    except Exception as err:
+        SwaVanLogRecorder.send_log(f"Error occurred while comparing with body: {err}")
+        return False
 
 
 def route_collector(prefix: str, endpoints: List[Endpoint]) -> dict:
     _endpoints = {}
     for endpoint in endpoints:
         if endpoint.is_active:
-            _url_to_method = _endpoints.get(endpoint.url.lower(), {})
+            _url_to_method = _endpoints.get(endpoint.url, {})
             _method_to_response = _url_to_method.get(endpoint.http_method, {
                 'responses': [],
                 'delay': endpoint.delay})
@@ -50,7 +55,7 @@ def route_collector(prefix: str, endpoints: List[Endpoint]) -> dict:
             _method_to_response["responses"] = list(filter(lambda x: x.is_active, _method_to_response["responses"]))
             _url_to_method.update({endpoint.http_method.lower(): _method_to_response})
 
-            _endpoint = {f"{prefix.lower()}{endpoint.url.lower()}": _url_to_method}
+            _endpoint = {f"{prefix.lower()}{endpoint.url}": _url_to_method}
             _endpoints.update(_endpoint)
     return _endpoints
 
