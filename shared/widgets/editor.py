@@ -3,6 +3,7 @@ import json
 from PyQt6.Qsci import QsciScintilla, QsciLexerJSON, QsciLexerPython, QsciLexerHTML, QsciLexerYAML, QsciLexerXML, \
     QsciLexerJavaScript
 from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QShortcut, QKeySequence
 from PyQt6.QtWidgets import QWidget
 
 from shared.recorder import SwaVanLogRecorder
@@ -50,6 +51,13 @@ class SwaVanCodeEditor(QWidget):
         self.code_formatter_btn.clicked.connect(self.format_data)
         self.code_editor_holder.addWidget(self.__editor)
         self.set_style()
+
+        # Save Key creator
+        shortcut_save = QShortcut(QKeySequence.StandardKey.Save, self)
+        shortcut_save.activated.connect(self.save)
+
+        shortcut_close = QShortcut(QKeySequence.StandardKey.Cancel, self)
+        shortcut_close.activated.connect(self.close_editor)
 
     def set_style(self):
         self.__editor.setContentsMargins(0, 0, 0, 0)
