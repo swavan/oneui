@@ -4,9 +4,9 @@ import webbrowser
 from typing import List
 
 import validators
-from PyQt6.QtCore import pyqtSignal, Qt, QSize
-from PyQt6.QtGui import QIcon, QIntValidator
-from PyQt6.QtWidgets import QWidget, QHeaderView, QTableWidgetItem, QFileDialog, QDialog, QVBoxLayout
+from PyQt5.QtCore import pyqtSignal, Qt, QSize
+from PyQt5.QtGui import QIntValidator, QIcon
+from PyQt5.QtWidgets import QWidget, QHeaderView, QFileDialog, QTableWidgetItem, QVBoxLayout, QDialog
 
 from mock.modals import Endpoint, Response, Header, Rule
 from mock.services.endpoint import EndpointService
@@ -49,7 +49,7 @@ class SwaVanEndpoint(QWidget):
 
         self.http_method_combo.addItems(
             map(lambda x: x.title(),
-                [ _method for _method in HTTP_METHODS.values() if _method.lower() != 'all']))
+                [_method for _method in HTTP_METHODS.values() if _method.lower() != 'all']))
         self.filter_by_combo.addItems(FILTER_BY_OPTIONS.values())
         self.rule_operator_combo.addItems(OPERATORS.values())
         self.set_endpoint(self._store)
@@ -61,12 +61,11 @@ class SwaVanEndpoint(QWidget):
         self.add_header_btn.clicked.connect(lambda: self.add_header())
 
         # Rule table
-        self.mock_rule_tbl.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
+        self.mock_rule_tbl.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.mock_rule_tbl.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
-        self.mock_rule_tbl.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+        self.mock_rule_tbl.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
         self.mock_rule_tbl.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
         self.mock_rule_tbl.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
-        self.mock_rule_tbl.horizontalHeader().setSectionResizeMode(5, QHeaderView.ResizeMode.ResizeToContents)
 
         self.mock_rule_tbl.clicked.connect(lambda x: self.rule_row_clicked(x))
 

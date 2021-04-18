@@ -1,6 +1,6 @@
 from typing import List
 
-from PyQt6.QtCore import QThread
+from PyQt5.QtCore import QThread
 
 from mock.modals import Mock
 from mock.servers.config import SwaVanMockTask, ServerTypes

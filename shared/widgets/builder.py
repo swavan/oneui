@@ -1,7 +1,7 @@
 import os
 
-from PyQt6.QtWidgets import QWidget
-from PyQt6.uic import loadUi
+from PyQt5.QtWidgets import QWidget
+from PyQt5.uic import loadUi
 
 
 def template_loader(filename: str, _widget: QWidget) -> None:

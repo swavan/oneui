@@ -2,8 +2,8 @@ import json
 import uuid
 from json.decoder import JSONDecodeError
 
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QWidget
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QWidget
 
 from mock.add.endpoint import SwaVanEndpoint
 from mock.modals import Endpoint

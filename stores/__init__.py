@@ -22,10 +22,6 @@ class DataStoreService:
             return []
 
     @classmethod
-    def load_children(cls, _pid: str, _filename: str) -> List[Dict]:
-        return [row for row in cls.load() if row.get("pid", None) == _pid]
-
-    @classmethod
     def save(cls, _data: Dict, _filename: str) -> None:
         _rows = list(filter(lambda x: _data.get("id", None) != x.get("id", None), cls.load(_filename)))
         _rows.append(_data)

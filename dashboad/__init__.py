@@ -1,5 +1,5 @@
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget, QMainWindow
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget, QMainWindow
 
 from browser_rule.page import SwaVanBrowserRulePage
 from mock.page import SwaVanMockPage

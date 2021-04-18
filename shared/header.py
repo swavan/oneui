@@ -1,4 +1,4 @@
-from PyQt6.QtCore import QAbstractTableModel, Qt
+from PyQt5.QtCore import QAbstractTableModel, Qt
 
 
 class SwaVanHeader(QAbstractTableModel):

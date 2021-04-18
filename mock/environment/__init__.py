@@ -1,6 +1,6 @@
-from PyQt6.QtCore import pyqtSignal, QSize, QEvent
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget, QListWidgetItem, QTableWidgetItem, QHeaderView, QMenu, QFileDialog
+from PyQt5.QtCore import pyqtSignal, QSize, QEvent
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget, QListWidgetItem, QHeaderView, QTableWidgetItem, QMenu, QFileDialog
 
 from mock.modals import Mock, Header
 from mock.services.mock import MockEnvironmentService

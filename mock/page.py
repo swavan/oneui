@@ -1,6 +1,6 @@
-from PyQt6.QtCore import Qt, QSize, QPropertyAnimation, pyqtSignal
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget, QDialog, QVBoxLayout, QDockWidget, QTextEdit
+from PyQt5.QtCore import pyqtSignal, QSize, QPropertyAnimation, Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QDockWidget, QTextEdit
 
 from mock.add import SwaVanMockImport
 from mock.add.endpoint import SwaVanEndpoint

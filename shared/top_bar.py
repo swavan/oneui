@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QApplication
+from PyQt5.QtWidgets import QWidget
 
 from shared.widgets.builder import template_loader
 

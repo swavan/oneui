@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QHeaderView
 
 from browser_rule.modals import BrowserRule
 from shared.widgets.builder import template_loader

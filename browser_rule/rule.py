@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QHeaderView
+from PyQt5.QtWidgets import QWidget, QHeaderView
 
 
 class SwaVanBrowserRule(QWidget):

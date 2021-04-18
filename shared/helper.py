@@ -2,8 +2,8 @@ import json
 from dataclasses import asdict
 from typing import List, Dict, Union
 
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QToolButton, QApplication
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QToolButton, QApplication
 from requests import Response
 
 from mock.servers.rest.modal import SwaVanHttpResponse, SwaVanHttp, SwaVanHttpRequest, RuleStatus

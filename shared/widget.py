@@ -1,8 +1,8 @@
 from typing import Callable
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QMessageBox, QPushButton
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMessageBox, QPushButton
 
 from shared.helper import do_nothing
 from shared.widgets.builder import full_path

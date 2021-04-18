@@ -1,10 +1,10 @@
 import json
 
-from PyQt6.Qsci import QsciScintilla, QsciLexerJSON, QsciLexerPython, QsciLexerHTML, QsciLexerYAML, QsciLexerXML, \
+from PyQt5.Qsci import QsciScintilla, QsciLexerPython, QsciLexerHTML, QsciLexerJSON, QsciLexerYAML, QsciLexerXML, \
     QsciLexerJavaScript
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QShortcut, QKeySequence
-from PyQt6.QtWidgets import QWidget
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QWidget, QShortcut
 
 from shared.recorder import SwaVanLogRecorder
 from shared.widgets.builder import template_loader

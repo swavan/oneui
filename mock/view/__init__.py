@@ -1,6 +1,6 @@
-from PyQt6.QtCore import QEvent, pyqtSignal
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget, QListWidgetItem, QMenu
+from PyQt5.QtCore import pyqtSignal, QEvent
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget, QListWidgetItem, QMenu
 
 from mock.modals import Endpoint
 from mock.services.endpoint import EndpointService
