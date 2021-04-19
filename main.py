@@ -9,7 +9,6 @@ from shared.recorder import SwaVanLogRecorder
 from shared.widgets.builder import full_path
 
 if __name__ == "__main__":
-    SwaVanLogRecorder.init()
     app = QApplication(sys.argv)
     app.setApplicationDisplayName("SwaVan")
     app.setApplicationName("SwaVan")
@@ -24,4 +23,5 @@ if __name__ == "__main__":
 
     widget = SwaVanMainWindow()
     widget.show()
+    SwaVanLogRecorder.init()
     sys.exit(app.exec())
