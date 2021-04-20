@@ -51,7 +51,9 @@ class SwaVanEndpoint(QWidget):
             map(lambda x: x.title(),
                 [_method for _method in HTTP_METHODS.values() if _method.lower() != 'all']))
         self.filter_by_combo.addItems(FILTER_BY_OPTIONS.values())
+        self.filter_by_combo.setCurrentIndex(0)
         self.rule_operator_combo.addItems(OPERATORS.values())
+        self.rule_operator_combo.setCurrentIndex(0)
         self.set_endpoint(self._store)
 
         self.header_tbl.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)

@@ -32,9 +32,9 @@ class Header:
 @dataclass
 class Rule:
     id: str = str(uuid.uuid4())
-    filter_by: str = ""
+    filter_by: str = "Query"
     field: str = ""
-    operator: str = ""
+    operator: str = "Equal"
     value: str = ""
     created_at: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -89,7 +89,7 @@ class Response:
 class Endpoint:
     id: str = str(uuid.uuid4())
     pid: str = str(uuid.uuid4())
-    http_method: str = ""
+    http_method: str = "Get"
     url: str = ""
     delay: int = 0
     is_active: bool = True
