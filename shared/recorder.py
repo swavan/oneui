@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 from shared.widgets.builder import full_path
@@ -14,6 +15,8 @@ class SwaVanLogRecorder:
 
     @classmethod
     def init(cls):
+        if not cls.is_log_file_exist():
+            open(full_path("data/logs/swavan.log"), 'w').close()
         cls.logger.setLevel(logging.INFO)
         fh = logging.FileHandler(full_path(cls.__log_file_name__))
         sh = logging.StreamHandler(sys.stdout)
@@ -28,3 +31,6 @@ class SwaVanLogRecorder:
     def reading_log(cls):
         return (row for row in open(full_path(cls.__log_file_name__)))
 
+    @classmethod
+    def is_log_file_exist(cls) -> bool:
+        return os.path.exists(full_path(cls.__log_file_name__))

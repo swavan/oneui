@@ -5,6 +5,8 @@ from uvicorn import Config, Server
 from mock.modals import Mock
 from mock.servers.config import SwaVanMockTask
 from mock.servers.rest.app import SwaVanHttp
+from shared.recorder import SwaVanLogRecorder
+from shared.widgets.builder import full_path
 
 
 class SwaVanRestMockServer(SwaVanMockTask):
@@ -16,15 +18,21 @@ class SwaVanRestMockServer(SwaVanMockTask):
         _config = Config(app=SwaVanHttp(_mock).app,
                          host="localhost",
                          headers=_headers,
-                         port=int(_mock.port))
+                         port=int(_mock.port),
+                         access_log=False)
         if _mock.enable_https:
+            _key = full_path("data/__certs__/swavan.key")
+            _crt = full_path("data/__certs__/swavan.crt")
             if _mock.use_default_cert:
-                cwd = os.path.dirname(os.path.realpath(__file__))
-                _config.ssl_keyfile = os.path.join(cwd, "certs/swavan.key")
-                _config.ssl_certfile = os.path.join(cwd, "certs/swavan.crt")
+                if os.path.isfile(_key) and os.path.isfile(_crt):
+                    _config.ssl_keyfile = _key
+                    _config.ssl_certfile = _crt
+                    SwaVanLogRecorder.send_log(f"Using default cert")
             else:
-                _config.ssl_keyfile = _mock.ssl_key_file_url
-                _config.ssl_certfile = _mock.ssl_cert_file_url
+                if os.path.isfile(_mock.ssl_key_file_url) and os.path.isfile(_mock.ssl_cert_file_url):
+                    _config.ssl_keyfile = _mock.ssl_key_file_url
+                    _config.ssl_certfile = _mock.ssl_cert_file_url
+                    SwaVanLogRecorder.send_log(f"Using custom cert")
         self._core_server = Server(config=_config)
 
     def start(self):

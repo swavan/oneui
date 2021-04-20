@@ -1,12 +1,13 @@
 from setuptools import setup
 
-APP = ['SwaVanOneUI.py']
+APP = ['main.py']
 DATA_FILES = ["assets", "templates", "data"]
 OPTIONS = {
     'argv_emulation': False,
-    "compressed" : True,
-    "optimize":2,
-    'iconfile': 'assets/images/logo/swavan_one_ui.icns'
+    "compressed": True,
+    "optimize": 1,
+    'iconfile': 'assets/images/logo/swavan_one_ui.icns',
+    'plist': 'Info.plist',
 }
 
 setup(

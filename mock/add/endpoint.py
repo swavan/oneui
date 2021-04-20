@@ -49,7 +49,7 @@ class SwaVanEndpoint(QWidget):
 
         self.http_method_combo.addItems(
             map(lambda x: x.title(),
-                [ _method for _method in HTTP_METHODS.values() if _method.lower() != 'all']))
+                [_method for _method in HTTP_METHODS.values() if _method.lower() != 'all']))
         self.filter_by_combo.addItems(FILTER_BY_OPTIONS.values())
         self.rule_operator_combo.addItems(OPERATORS.values())
         self.set_endpoint(self._store)

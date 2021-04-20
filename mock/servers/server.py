@@ -31,7 +31,7 @@ class SwaVanMockServerService:
     _workers: List[SwaVanMockWorker] = []
 
     @classmethod
-    def is_running(cls, _id: str):
+    def is_running(cls, _id: str) -> bool:
         return any([_worker.task().id == _id for _worker in cls._workers])
 
     @classmethod

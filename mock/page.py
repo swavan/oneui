@@ -53,14 +53,15 @@ class SwaVanMockPage(QWidget):
         is_running = SwaVanMockServerService.is_running(SwaVanCache.get_selected_env())
         if is_running:
             SwaVanMockServerService.stop(SwaVanCache.get_selected_env())
+            self.play_icon_update(not is_running)
         else:
             _mock = MockEnvironmentService.load_by_id(SwaVanCache.get_selected_env())
             if _mock:
                 _endpoints = EndpointService.load_by_parent(_mock.id)
                 if _endpoints:
                     _mock.endpoints = _endpoints
-                    SwaVanMockServerService.start(_mock, ServerTypes.REST)
-        self.play_icon_update(not is_running)
+                SwaVanMockServerService.start(_mock, ServerTypes.REST)
+                self.play_icon_update(not is_running)
     
     def play_icon_update(self, is_running: bool):
         _icon = QIcon(full_path(f"assets/images/icons/{'play' if not is_running else 'stop'}.ico"))
